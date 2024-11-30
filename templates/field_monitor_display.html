@@ -74,6 +74,7 @@ Display showing robot connection status.
   <script src="/static/js/lib/bootstrap.bundle.min.js"></script>
   <script src="/static/js/match_timing.js"></script>
   <script src="/static/js/field_monitor_display.js"></script>
+
   {{range $sound := .MatchSounds}}
   <audio id="sound-{{$sound.Name}}" src="/static/audio/{{$sound.Name}}.{{$sound.FileExtension}}" preload="auto">
   </audio>
@@ -82,7 +83,7 @@ Display showing robot connection status.
 
 {{define "row"}}
 <div class="position-row center ds-dependent">
-  <div class="left-position center reversible-left">{{.leftPosition}}</div>
+  <div class="left-position center reversible-left" id="flipButton" role="button">{{.leftPosition}}</div>
   {{template "team" dict "side" "left" "position" .leftPosition}}
   {{template "team" dict "side" "right" "position" .rightPosition}}
   <div class="right-position center ds-dependent reversible-right">{{.rightPosition}}</div>
