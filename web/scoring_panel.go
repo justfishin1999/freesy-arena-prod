@@ -167,7 +167,8 @@ func (web *Web) scoringPanelWebsocketHandler(w http.ResponseWriter, r *http.Requ
 													
 													_matchStartTime,
 													
-													_currentTime)
+													_currentTime,
+													web.arena.CurrentMatch.Type == model.Playoff)
 						log.Printf("Speaker Pressed")
 						scoreChanged = true
 				case "O":
@@ -216,7 +217,8 @@ func (web *Web) scoringPanelWebsocketHandler(w http.ResponseWriter, r *http.Requ
 													
 													_matchStartTime,
 														
-													_currentTime)
+													_currentTime,
+													web.arena.CurrentMatch.Type == model.Playoff)
 					log.Printf("Amp Pressed")
 					scoreChanged = true
 				case "U":
@@ -273,7 +275,8 @@ func (web *Web) scoringPanelWebsocketHandler(w http.ResponseWriter, r *http.Requ
 													
 													_matchStartTime,
 													
-													_currentTime)
+													_currentTime,
+													web.arena.CurrentMatch.Type == model.Playoff)
 					log.Printf("amplifyButton Pressed")
 					scoreChanged = true
 				case "coopButton":
@@ -292,7 +295,8 @@ func (web *Web) scoringPanelWebsocketHandler(w http.ResponseWriter, r *http.Requ
 														
 													_matchStartTime,
 														
-													_currentTime)
+													_currentTime,
+													web.arena.CurrentMatch.Type == model.Playoff)
 					log.Printf("coopButton Pressed")
 					scoreChanged = true
 			}

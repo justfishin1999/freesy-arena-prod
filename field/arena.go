@@ -1010,10 +1010,10 @@ func (arena *Arena) handlePlcInputOutput() {
 		redAmpSpeaker := &arena.RedRealtimeScore.CurrentScore.AmpSpeaker
 		blueAmpSpeaker := &arena.BlueRealtimeScore.CurrentScore.AmpSpeaker
 		redAmpSpeaker.UpdateState(
-			redAmpNoteCount, redSpeakerNoteCount, redAmplifyButton, redCoopButton, matchStartTime, currentTime,
+			redAmpNoteCount, redSpeakerNoteCount, redAmplifyButton, redCoopButton, matchStartTime, currentTime, arena.CurrentMatch.Type == model.Playoff,
 		)
 		blueAmpSpeaker.UpdateState(
-			blueAmpNoteCount, blueSpeakerNoteCount, blueAmplifyButton, blueCoopButton, matchStartTime, currentTime,
+			blueAmpNoteCount, blueSpeakerNoteCount, blueAmplifyButton, blueCoopButton, matchStartTime, currentTime,arena.CurrentMatch.Type == model.Playoff,
 		)
 		if !oldRedScore.Equals(redScore) || !oldBlueScore.Equals(blueScore) ||
 			oldRedAmplifiedTimeRemainingSec != arena.RedRealtimeScore.AmplifiedTimeRemainingSec ||
@@ -1167,10 +1167,10 @@ func (arena *Arena) handlePlcInputOutput() {
 		redAmpSpeaker := &arena.RedRealtimeScore.CurrentScore.AmpSpeaker
 		blueAmpSpeaker := &arena.BlueRealtimeScore.CurrentScore.AmpSpeaker
 		redAmpSpeaker.UpdateState(
-			redAmpNoteCount, redSpeakerNoteCount, redAmplifyButton, redCoopButton, matchStartTime, currentTime,
+			redAmpNoteCount, redSpeakerNoteCount, redAmplifyButton, redCoopButton, matchStartTime, currentTime,arena.CurrentMatch.Type == model.Playoff,
 		)
 		blueAmpSpeaker.UpdateState(
-			blueAmpNoteCount, blueSpeakerNoteCount, blueAmplifyButton, blueCoopButton, matchStartTime, currentTime,
+			blueAmpNoteCount, blueSpeakerNoteCount, blueAmplifyButton, blueCoopButton, matchStartTime, currentTime,arena.CurrentMatch.Type == model.Playoff,
 		)
 		if !oldRedScore.Equals(redScore) || !oldBlueScore.Equals(blueScore) ||
 			oldRedAmplifiedTimeRemainingSec != arena.RedRealtimeScore.AmplifiedTimeRemainingSec ||
