@@ -140,6 +140,7 @@ func (web *Web) newHandler() http.Handler {
 	mux.HandleFunc("GET /api/sponsor_slides", web.sponsorSlidesApiHandler)
 	mux.HandleFunc("GET /api/teams/{teamId}/avatar", web.teamAvatarsApiHandler)
 	mux.HandleFunc("GET /display", web.placeholderDisplayHandler)
+	mux.HandleFunc("GET /field_monitor_help", web.fieldMonitorDisplayHelpHandler)
 	mux.HandleFunc("GET /display/websocket", web.placeholderDisplayWebsocketHandler)
 	mux.HandleFunc("GET /displays/alliance_station", web.allianceStationDisplayHandler)
 	mux.HandleFunc("GET /displays/alliance_station/websocket", web.allianceStationDisplayWebsocketHandler)
