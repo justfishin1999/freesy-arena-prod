@@ -136,6 +136,7 @@ func (web *Web) newHandler() http.Handler {
 	mux.HandleFunc("GET /api/bracket/svg", web.bracketSvgApiHandler)
 	mux.HandleFunc("GET /api/matches/{type}", web.matchesApiHandler)
 	mux.HandleFunc("GET /api/rankings", web.rankingsApiHandler)
+	mux.HandleFunc("GET /api/allianceStatus", web.allianceStatusApiHandler)
 	mux.HandleFunc("GET /api/sponsor_slides", web.sponsorSlidesApiHandler)
 	mux.HandleFunc("GET /api/teams/{teamId}/avatar", web.teamAvatarsApiHandler)
 	mux.HandleFunc("GET /display", web.placeholderDisplayHandler)
