@@ -18,8 +18,6 @@ type Plc interface {
 	SetAddress(address string)
 	IsEnabled() bool
 	IsHealthy() bool
-	SetAlternateIOStopState(input int, state bool)
-	ResetEstops()
 	IoChangeNotifier() *websocket.Notifier
 	Run()
 	GetArmorBlockStatuses() map[string]bool
@@ -42,6 +40,9 @@ type Plc interface {
 	SetSubwooferCountdown(redState, blueState bool)
 	SetAmpLights(redLow, redHigh, redCoop, blueLow, blueHigh, blueCoop bool)
 	SetPostMatchSubwooferLights(state bool)
+	//Freezy Arena
+	SetAlternateIOStopState(input int, state bool)
+	ResetEstops()
 }
 
 type ModbusPlc struct {
@@ -166,25 +167,6 @@ func (plc *ModbusPlc) SetAddress(address string) {
 	}
 }
 
-func (plc *ModbusPlc) ResetEstops(){
-	plc.inputs[red1EStop] = true
-	plc.inputs[red2EStop] = true
-	plc.inputs[red3EStop] = true
-	plc.inputs[blue1EStop] = true
-	plc.inputs[blue2EStop] = true
-	plc.inputs[blue3EStop] = true
-	plc.inputs[red1AStop] = true
-	plc.inputs[red2AStop] = true
-	plc.inputs[red3AStop] = true
-	plc.inputs[blue1AStop] = true
-	plc.inputs[blue2AStop] = true
-	plc.inputs[blue3AStop] = true
-}
-
-// used for Alternate IO stops
-func (plc *ModbusPlc) SetAlternateIOStopState(input int, state bool){
-	plc.inputs[input] = state
-}
 // Returns true if the PLC is enabled in the configurations.
 func (plc *ModbusPlc) IsEnabled() bool {
 	return plc.address != ""
@@ -526,4 +508,25 @@ func boolToByte(bools []bool) []byte {
 		}
 	}
 	return bytes
+}
+
+func (plc *ModbusPlc) ResetEstops(){
+	plc.inputs[fieldEStop] = true
+	plc.inputs[red1EStop] = true
+	plc.inputs[red2EStop] = true
+	plc.inputs[red3EStop] = true
+	plc.inputs[blue1EStop] = true
+	plc.inputs[blue2EStop] = true
+	plc.inputs[blue3EStop] = true
+	plc.inputs[red1AStop] = true
+	plc.inputs[red2AStop] = true
+	plc.inputs[red3AStop] = true
+	plc.inputs[blue1AStop] = true
+	plc.inputs[blue2AStop] = true
+	plc.inputs[blue3AStop] = true
+}
+
+// used for Alternate IO stops
+func (plc *ModbusPlc) SetAlternateIOStopState(input int, state bool){
+	plc.inputs[input] = state
 }
