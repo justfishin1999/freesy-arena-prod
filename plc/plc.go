@@ -43,6 +43,7 @@ type Plc interface {
 	//Freezy Arena
 	SetAlternateIOStopState(input int, state bool)
 	ResetEstops()
+	GetFieldStackLight() (bool, bool, bool, bool)
 }
 
 type ModbusPlc struct {
@@ -529,4 +530,9 @@ func (plc *ModbusPlc) ResetEstops(){
 // used for Alternate IO stops
 func (plc *ModbusPlc) SetAlternateIOStopState(input int, state bool){
 	plc.inputs[input] = state
+}
+
+
+func (plc *ModbusPlc) GetFieldStackLight() (bool, bool, bool, bool) {
+	return plc.coils[stackLightRed], plc.coils[stackLightBlue], plc.coils[stackLightOrange], plc.coils[stackLightGreen]
 }

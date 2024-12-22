@@ -966,9 +966,9 @@ func (arena *Arena) handlePlcInputOutput() {
 		case PostTimeout:
 			// Set the stack light state -- solid alliance color(s) if robots are not connected, solid orange if scores are
 			// not input, or blinking green if ready.
-			//*greenStackLight := redAllianceReady && blueAllianceReady //&& arena.Plc.GetCycleState(2, 0, 2)
-			//*arena.Plc.SetStackLights(!redAllianceReady, !blueAllianceReady, false, greenStackLight)
-			//*arena.Plc.SetStackBuzzer(redAllianceReady && blueAllianceReady)
+			greenStackLight := redAllianceReady && blueAllianceReady //&& arena.Plc.GetCycleState(2, 0, 2)
+			arena.Plc.SetStackLights(!redAllianceReady, !blueAllianceReady, false, greenStackLight)
+			arena.Plc.SetStackBuzzer(redAllianceReady && blueAllianceReady)
 
 			// Turn off lights if all teams become ready.
 			if redAllianceReady && blueAllianceReady {
@@ -982,12 +982,12 @@ func (arena *Arena) handlePlcInputOutput() {
 			if arena.FieldReset {
 				//*arena.Plc.SetFieldResetLight(true)
 			}
-			//*scoreReady := arena.RedRealtimeScore.FoulsCommitted && arena.BlueRealtimeScore.FoulsCommitted &&
-			//*	arena.alliancePostMatchScoreReady("red") && arena.alliancePostMatchScoreReady("blue")
-			//*arena.Plc.SetStackLights(false, false, !scoreReady, false)
+			scoreReady := arena.RedRealtimeScore.FoulsCommitted && arena.BlueRealtimeScore.FoulsCommitted &&
+				arena.alliancePostMatchScoreReady("red") && arena.alliancePostMatchScoreReady("blue")
+			arena.Plc.SetStackLights(false, false, !scoreReady, false)
 		case AutoPeriod, PausePeriod, TeleopPeriod:
-			//*arena.Plc.SetStackBuzzer(false)
-			//*arena.Plc.SetStackLights(!redAllianceReady, !blueAllianceReady, false, true)
+			arena.Plc.SetStackBuzzer(false)
+			arena.Plc.SetStackLights(!redAllianceReady, !blueAllianceReady, false, true)
 		}
 
 		// Get all the game-specific inputs and update the score.
