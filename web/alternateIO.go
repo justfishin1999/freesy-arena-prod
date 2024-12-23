@@ -75,3 +75,18 @@ func (web *Web) fieldStackLightGetHandler(w http.ResponseWriter, r *http.Request
 	w.Write(response)
 }
 
+// Handles the request to start the match.
+func (web *Web) startMatchPostHandler(w http.ResponseWriter, r *http.Request) {
+	// Ensure the request is a POST request.
+	if r.Method != http.MethodPost {
+		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// Start the match.
+	web.arena.StartMatch()
+
+	// Respond with success.
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("Field stack light state updated successfully."))
+}
