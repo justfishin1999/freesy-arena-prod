@@ -119,7 +119,7 @@ $(function() {
 });
 
 // Set initial visibility state
-let bool = false;
+let bool = true;
 
 // Function to toggle visibility of the panel
 function toggleEstopPanel() {
