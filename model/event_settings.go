@@ -24,6 +24,9 @@ type EventSettings struct {
 	SelectionShowUnpickedTeams      bool
 	TbaDownloadEnabled              bool
 	AlternateIOEnabled              bool
+	ScoreTableEstopAddress  		string
+	RedAllianceStationEstopAddress  string
+	BlueAllianceStationEstopAddress string
 	TbaPublishingEnabled            bool
 	TbaEventCode                    string
 	TbaSecretId                     string

@@ -85,7 +85,6 @@ func (web *Web) settingsPostHandler(w http.ResponseWriter, r *http.Request) {
 	eventSettings.SelectionRound3Order = r.PostFormValue("selectionRound3Order")
 	eventSettings.SelectionShowUnpickedTeams = r.PostFormValue("selectionShowUnpickedTeams") == "on"
 	eventSettings.TbaDownloadEnabled = r.PostFormValue("tbaDownloadEnabled") == "on"
-	eventSettings.AlternateIOEnabled = r.PostFormValue("alternateIOEnabled") == "on"
 	eventSettings.TbaPublishingEnabled = r.PostFormValue("tbaPublishingEnabled") == "on"
 	eventSettings.TbaEventCode = r.PostFormValue("tbaEventCode")
 	eventSettings.TbaSecretId = r.PostFormValue("tbaSecretId")
@@ -117,13 +116,16 @@ func (web *Web) settingsPostHandler(w http.ResponseWriter, r *http.Request) {
 	eventSettings.MelodyBonusThresholdWithCoop, _ = strconv.Atoi(r.PostFormValue("melodyBonusThresholdWithCoop"))
 	eventSettings.AmplificationNoteLimit, _ = strconv.Atoi(r.PostFormValue("amplificationNoteLimit"))
 	eventSettings.AmplificationDurationSec, _ = strconv.Atoi(r.PostFormValue("amplificationDurationSec"))
+	// Freezy Arena
+	eventSettings.AlternateIOEnabled = r.PostFormValue("alternateIOEnabled") == "on"
+	eventSettings.ScoreTableEstopAddress = r.PostFormValue("ScoreTableEstopAddress")
 
 	err := web.arena.Database.UpdateEventSettings(eventSettings)
 	if err != nil {
 		handleWebErr(w, err)
 		return
 	}
-
+	
 	// Refresh the arena in case any of the settings changed.
 	err = web.arena.LoadSettings()
 	if err != nil {

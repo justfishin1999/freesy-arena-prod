@@ -37,6 +37,7 @@ func (web *Web) eStopStatePostHandler(w http.ResponseWriter, r *http.Request) {
 
 	for _, item := range payload {
     	web.arena.Plc.SetAlternateIOStopState(item.Channel, item.State)
+		//web.arena.Esp32.SetAlternateIOStopState(item.Channel, item.State)
 	}
 
 	// Respond with success.

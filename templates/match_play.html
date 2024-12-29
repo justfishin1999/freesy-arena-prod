@@ -108,8 +108,15 @@
             <span class="badge badge-scoring" id="plcStatus"></span>
             <span class="badge badge-scoring" id="fieldEStop">E-Stop</span><br />
             {{range $name, $status := .PlcArmorBlockStatuses}}
-              <span class="badge badge-scoring" id="plc{{$name}}Status">{{$name}}</span>
+            <span class="badge badge-scoring" id="plc{{$name}}Status">{{$name}}</span>
             {{end}}
+          </p>
+          {{end}}
+          {{if .AlternateIOEnabled}}
+          <h6>Alternate IO Status</h6>
+          <p>
+            <span class="badge badge-scoring" id="alternateIO"></span>
+            <span class="badge badge-scoring" id="fieldEStop">E-Stop</span><br />
           </p>
         {{end}}
         </div>

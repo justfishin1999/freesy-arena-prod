@@ -12,6 +12,7 @@ import (
 	"log"
 	"strings"
 	"time"
+	
 )
 
 type Plc interface {
@@ -190,7 +191,6 @@ func (plc *ModbusPlc) Run() {
 			if !plc.IsEnabled() {
 				// No PLC is configured; just allow the loop to continue to simulate inputs and outputs.
 				plc.isHealthy = false
-
 			} else {
 				err := plc.connect()
 				if err != nil {
@@ -531,7 +531,7 @@ func (plc *ModbusPlc) ResetEstops(){
 func (plc *ModbusPlc) SetAlternateIOStopState(input int, state bool){
 	plc.inputs[input] = state
 }
-
+  
 
 func (plc *ModbusPlc) GetFieldStackLight() (bool, bool, bool, bool) {
 	return plc.coils[stackLightRed], plc.coils[stackLightBlue], plc.coils[stackLightOrange], plc.coils[stackLightGreen]

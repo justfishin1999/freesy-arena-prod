@@ -255,12 +255,21 @@ const handleArenaStatus = function(data) {
   $("#accessPointStatus").attr("data-status", data.AccessPointStatus);
   $("#switchStatus").attr("data-status", data.SwitchStatus);
 
+  // Update the PLC status view.
   if (data.PlcIsHealthy) {
     $("#plcStatus").text("Connected");
     $("#plcStatus").attr("data-ready", true);
   } else {
     $("#plcStatus").text("Not Connected");
     $("#plcStatus").attr("data-ready", false);
+  }
+
+  if (data.ScoreIsHealthy) {
+    $("#alternateIO").text("Score Connected");
+    $("#alternateIO").attr("data-ready", true);
+  } else {
+    $("#alternateIO").text("Score Not Connected");
+    $("#alternateIO").attr("data-ready", false);
   }
   $("#fieldEStop").attr("data-ready", !data.FieldEStop);
   $.each(data.PlcArmorBlockStatuses, function(name, status) {
