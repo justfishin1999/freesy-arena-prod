@@ -88,6 +88,15 @@
   line-height: 36px;
   font-size: 16px;
 }
+.badge-alternatIO[data-ready="0"] {
+  background-color: #666;
+}
+.badge-alternatIO[data-ready="1"] {
+  background-color: #e66;
+}
+.badge-alternatIO[data-ready="2"] {
+  background-color: #0c6;
+}
 .badge-scoring {
   background-color: #e66;
 }

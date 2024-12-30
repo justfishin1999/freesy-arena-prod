@@ -18,13 +18,24 @@ import (
 
 type Esp32 interface {
 	Run()
-	IsScoreHealthy() bool
-	SetAddress(string) 
+	IsScoreTableIOEnabled() bool
+	IsRedEstopsEnabled() bool
+	IsBlueEstopsEnabled() bool
+	IsScoreTableHealthy() bool
+	IsRedEstopsHealthy() bool
+	IsBlueEstopsHealthy() bool
+	SetScoreTableAddress(string) 
+	SetRedAllianceStationEstopAddress(string) 
+	SetBlueAllianceStationEstopAddress(string) 
 }
 
 type Esp32IO struct {
 	ScoreTableIP		string
+	RedAllianceEstopsIP		string
+	BlueAllianceEstopsIP		string
 	scoreTableHealthy 	bool
+	RedEstopsHealthy 	bool
+	BlueEstopsHealthy 	bool
 }
 const LoopPeriodMs = 1000 // Define the loop period in milliseconds
 
@@ -35,51 +46,141 @@ type RequestPayload struct {
 	State   bool `json:"state"`
 }
 
-func (esp32 *Esp32IO) SetAddress(address string) {
-	esp32.ScoreTableIP = strings.TrimSpace(address)
-	log.Printf("Set ScoreTableIP to: %s", esp32.ScoreTableIP)
-	/* plc.resetConnection()
-
-	if plc.ioChangeNotifier == nil {
-		// Register a notifier that listeners can subscribe to to get websocket updates about I/O value changes.
-		plc.ioChangeNotifier = websocket.NewNotifier("plcIoChange", plc.generateIoChangeMessage)
-	} */
+func (esp32 *Esp32IO) SetScoreTableAddress(address string) {
+	address = strings.TrimSpace(address)
+	if address == "" {
+		esp32.ScoreTableIP = address
+        return
+    }
+    if net.ParseIP(address) == nil {
+        log.Printf("Invalid Score Table IP address: %s", address)
+        return
+    }
+    esp32.ScoreTableIP = address
+    log.Printf("Set Score Table IP to: %s", esp32.ScoreTableIP)
+}
+func (esp32 *Esp32IO) SetRedAllianceStationEstopAddress(address string) {
+	address = strings.TrimSpace(address)
+	if address == "" {
+		esp32.RedAllianceEstopsIP = address
+        return
+    }
+    if net.ParseIP(address) == nil {
+        log.Printf("Invalid Red Alliance Estops IP address: %s", address)
+        return
+    }
+    esp32.RedAllianceEstopsIP = address
+	log.Printf("Red Alliance Estops IP to: %s", esp32.RedAllianceEstopsIP)
+}
+func (esp32 *Esp32IO) SetBlueAllianceStationEstopAddress(address string) {
+	address = strings.TrimSpace(address)
+	if address == "" {
+		esp32.BlueAllianceEstopsIP = address
+        return
+    }
+    if net.ParseIP(address) == nil {
+        log.Printf("Invalid Blue Alliance Estops IP address: %s", address)
+        return
+    }
+    esp32.BlueAllianceEstopsIP = address
+	log.Printf("Blue Alliance Estops IP to: %s", esp32.BlueAllianceEstopsIP)
 }
 
 // Checks if an IP address is reachable by attempting a TCP connection.
-func isDevicePresent(ip string, port string) bool {
+func isDevicePresent(ip string, port string) error {
     address := net.JoinHostPort(ip, port)
     conn, err := net.DialTimeout("tcp", address, time.Second*2)
     if err != nil {
-        log.Printf("Device not reachable at %s: %v", address, err)
-        return false
-    }
+        //log.Printf("Device not reachable at %s: %v", address, err)
+        return err
+    } 
     conn.Close()
-    return true
+    return err
 }
 
-// Loops indefinitely to read inputs from and write outputs to PLC.
+// Run starts the ESP32 IO monitoring loop.
 func (esp32 *Esp32IO) Run() {
 	for {
-		if !true {
-			// No PLC is configured; just allow the loop to continue to simulate inputs and outputs.
+		// Check if the Score Table Estops are reachable.
+		if !esp32.IsScoreTableIOEnabled() {
+			// If the Score Table is not enabled, don't check it.
 			esp32.scoreTableHealthy = false
 		} else {
-			if !isDevicePresent(esp32.ScoreTableIP, "80")  {
+			//log.Println("ScoreTable Check")
+			err := isDevicePresent(esp32.ScoreTableIP, "80")
+			if err != nil {
+				log.Printf("Score Table not reachable at %s: %v", esp32.ScoreTableIP, err)
 				time.Sleep(time.Second * plcRetryIntevalSec)
 				esp32.scoreTableHealthy = false
 				continue
+				}else{
+					esp32.scoreTableHealthy = true
+				}
+			}
+			// Check if the Red Alliance Estops are healthy.
+			if !esp32.IsRedEstopsEnabled() {
+				// If the Red Alliance Estops are not enabled, don't check them.
+				esp32.RedEstopsHealthy= false
+				} else {
+			//log.Println("Red Estops IO Check")
+			err := isDevicePresent(esp32.RedAllianceEstopsIP, "80")
+			if err != nil {
+				log.Printf("Red Alliance Estops not reachable at %s: %v", esp32.RedAllianceEstopsIP, err)
+				time.Sleep(time.Second * plcRetryIntevalSec)
+				esp32.RedEstopsHealthy = false
+				continue
+				}else{
+					esp32.RedEstopsHealthy = true
+				}
+			}
+			// Check if the Blue Alliance Estops are healthy.
+			if !esp32.IsBlueEstopsEnabled() {
+				// If the Blue Alliance Estops are not enabled, don't check them.
+				esp32.BlueEstopsHealthy = false
+				} else {
+			//log.Println("Blue Estops IO Check")
+			err := isDevicePresent(esp32.BlueAllianceEstopsIP, "80")
+			if err != nil {
+				log.Printf("Blue Alliance Estops not reachable at %s: %v", esp32.BlueAllianceEstopsIP, err)
+				time.Sleep(time.Second * plcRetryIntevalSec)
+				esp32.BlueEstopsHealthy = false
+				continue
 			}else{
-				esp32.scoreTableHealthy = true
+				esp32.BlueEstopsHealthy = true
 			}
 		}
-		log.Println("ScoreTable Check")
+		
 		startTime := time.Now()
 		time.Sleep(time.Until(startTime.Add(time.Millisecond * LoopPeriodMs)))
 	}
 }
 
+// Returns whether the alternate IO is enabled.
+func (esp32 *Esp32IO) IsScoreTableIOEnabled() bool {
+	return esp32.ScoreTableIP != ""
+}
+
+// Returns whether the alternate IO is enabled.
+func (esp32 *Esp32IO) IsRedEstopsEnabled() bool {
+	return esp32.RedAllianceEstopsIP != ""
+}
+
+// Returns whether the alternate IO is enabled.
+func (esp32 *Esp32IO) IsBlueEstopsEnabled() bool {
+	return esp32.BlueAllianceEstopsIP != ""
+}
+
 // Returns the health status of the alternate IO.
-func (esp32 *Esp32IO) IsScoreHealthy() bool {
+func (esp32 *Esp32IO) IsScoreTableHealthy() bool {
 	return esp32.scoreTableHealthy
+}
+
+// Returns the health status of the alternate IO.
+func (esp32 *Esp32IO) IsRedEstopsHealthy() bool {
+	return esp32.RedEstopsHealthy
+}
+
+// Returns the health status of the alternate IO.
+func (esp32 *Esp32IO) IsBlueEstopsHealthy() bool {
+	return esp32.BlueEstopsHealthy
 }
