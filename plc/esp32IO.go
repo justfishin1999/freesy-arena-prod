@@ -114,6 +114,9 @@ func (esp32 *Esp32IO) Run() {
 				esp32.scoreTableHealthy = false
 				continue
 				}else{
+					if (!esp32.scoreTableHealthy){
+						log.Printf("Score Table Connected at: %s", esp32.ScoreTableIP)
+					}
 					esp32.scoreTableHealthy = true
 				}
 			}
@@ -130,6 +133,9 @@ func (esp32 *Esp32IO) Run() {
 				esp32.RedEstopsHealthy = false
 				continue
 				}else{
+					if (!esp32.RedEstopsHealthy){
+						log.Printf("Red Estops Connected at: %s ", esp32.RedAllianceEstopsIP)
+					}
 					esp32.RedEstopsHealthy = true
 				}
 			}
@@ -146,6 +152,9 @@ func (esp32 *Esp32IO) Run() {
 				esp32.BlueEstopsHealthy = false
 				continue
 			}else{
+				if (!esp32.BlueEstopsHealthy){
+					log.Printf("Blue Estops Connected at: %s ", esp32.BlueAllianceEstopsIP)
+				}
 				esp32.BlueEstopsHealthy = true
 			}
 		}
