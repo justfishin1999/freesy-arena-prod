@@ -27,16 +27,24 @@ var MelodyBonusThresholdWithoutCoop = 18
 var MelodyBonusThresholdWithCoop = 15
 var AmplificationNoteLimit = 4
 var AmplificationDurationSec = 10
+var CoralRPThresholdPerLevel_WithoutCoop = 5
+var CoralRPThresholdPerLevel_WithCoop = 5
+var CoralRPThresholdRequiredLevels_WithoutCoop = 4
+var CoralRPThresholdRequiredLevels_WithCoop = 3
 
 // Represents the state of a robot at the end of the match.
 type EndgameStatus int
 
 const (
 	EndgameNone EndgameStatus = iota
+	EndgameParkedInBargeZone
+	EndgameOffGroundShallowCage
+	EndgameOffGroundDeepCage
 	EndgameParked
 	EndgameStageLeft
 	EndgameCenterStage
 	EndgameStageRight
+
 )
 
 // Represents a side of the Stage field element.
@@ -60,7 +68,8 @@ func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 	// Calculate autonomous period points.
 	for _, status := range score.LeaveStatuses {
 		if status {
-			summary.LeavePoints += 2
+			//summary.LeavePoints += 2
+			summary.LeavePoints += 3
 		}
 	}
 	autoNotePoints := score.AmpSpeaker.AutoNotePoints()
@@ -70,11 +79,20 @@ func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 	summary.AmpPoints = score.AmpSpeaker.AmpPoints()
 	summary.SpeakerPoints = score.AmpSpeaker.SpeakerPoints()
 
+	// Calculate Algae points.
+	summary.AlgaePoints = score.AmpSpeaker.AlgaePoints()
+
 	// Calculate endgame points.
 	robotsByPosition := map[StagePosition]int{StageLeft: 0, CenterStage: 0, StageRight: 0}
 	for _, status := range score.EndgameStatuses {
 		switch status {
-		case EndgameParked:
+		case EndgameParkedInBargeZone:
+			summary.EndgamePoints += 2
+		case EndgameOffGroundShallowCage:
+			summary.EndgamePoints += 6
+		case EndgameOffGroundDeepCage:
+			summary.EndgamePoints += 12
+		/* case EndgameParked:
 			summary.ParkPoints += 1
 		case EndgameStageLeft:
 			summary.OnStagePoints += 3
@@ -84,7 +102,7 @@ func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 			robotsByPosition[CenterStage]++
 		case EndgameStageRight:
 			summary.OnStagePoints += 3
-			robotsByPosition[StageRight]++
+			robotsByPosition[StageRight]++ */
 		default:
 		}
 	}
@@ -112,7 +130,7 @@ func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 	summary.StagePoints = summary.ParkPoints + summary.OnStagePoints + summary.HarmonyPoints + summary.SpotlightPoints +
 		summary.TrapPoints
 
-	summary.MatchPoints = summary.LeavePoints + summary.AmpPoints + summary.SpeakerPoints + summary.StagePoints
+	summary.MatchPoints = summary.AlgaePoints + summary.EndgamePoints + summary.LeavePoints;// summary.LeavePoints + summary.AmpPoints + summary.SpeakerPoints + summary.StagePoints
 
 	// Calculate penalty points.
 	for _, foul := range opponentScore.Fouls {

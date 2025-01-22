@@ -140,6 +140,14 @@ func (web *Web) scoringPanelWebsocketHandler(w http.ResponseWriter, r *http.Requ
 						}
 						scoreChanged = true
 					}
+				case "endgameStatus":
+					if args.TeamPosition >= 1 && args.TeamPosition <= 3 {
+						score.EndgameStatuses[args.TeamPosition-1]++
+						if score.EndgameStatuses[args.TeamPosition-1] > 3 {
+							score.EndgameStatuses[args.TeamPosition-1] = 0
+						}
+						scoreChanged = true
+					}
 				case "microphone":
 					log.Printf("Microphone Pressed")
 					if args.StageIndex >= 0 && args.StageIndex <= 2 {
@@ -171,25 +179,15 @@ func (web *Web) scoringPanelWebsocketHandler(w http.ResponseWriter, r *http.Requ
 													web.arena.CurrentMatch.Type == model.Playoff)
 						log.Printf("Speaker Pressed")
 						scoreChanged = true
-				case "O":
-					score.AmpSpeaker.AutoSpeakerNotes = score.AmpSpeaker.AutoSpeakerNotes+1
+				case "P":
+					score.AmpSpeaker.ProcessedAlgae = score.AmpSpeaker.ProcessedAlgae+1
 					log.Printf("O Pressed")
 					scoreChanged = true
-				case "o":
-					if score.AmpSpeaker.AutoSpeakerNotes > 0 {
-						score.AmpSpeaker.AutoSpeakerNotes = score.AmpSpeaker.AutoSpeakerNotes-1
+				case "p":
+					if score.AmpSpeaker.ProcessedAlgae > 0 {
+						score.AmpSpeaker.ProcessedAlgae = score.AmpSpeaker.ProcessedAlgae-1
 					}
 					log.Printf("o Pressed")
-					scoreChanged = true
-				case "P":
-					score.AmpSpeaker.TeleopAmplifiedSpeakerNotes = score.AmpSpeaker.TeleopAmplifiedSpeakerNotes+1
-					log.Printf("P Pressed")
-					scoreChanged = true
-				case "p":
-					if score.AmpSpeaker.TeleopAmplifiedSpeakerNotes > 0{
-						score.AmpSpeaker.TeleopAmplifiedSpeakerNotes = score.AmpSpeaker.TeleopAmplifiedSpeakerNotes-1
-					}
-					log.Printf("p Pressed")
 					scoreChanged = true
 				case "I":
 					score.AmpSpeaker.TeleopUnamplifiedSpeakerNotes = score.AmpSpeaker.TeleopUnamplifiedSpeakerNotes+1
@@ -248,14 +246,12 @@ func (web *Web) scoringPanelWebsocketHandler(w http.ResponseWriter, r *http.Requ
 					log.Printf("y Pressed")
 					scoreChanged = true
 				case "B":
-					if score.AmpSpeaker.BankedAmpNotes < 2{
-						score.AmpSpeaker.BankedAmpNotes = score.AmpSpeaker.BankedAmpNotes+1
-					}
+					score.AmpSpeaker.NetAlgae = score.AmpSpeaker.NetAlgae+1
 					log.Printf("B Pressed")
 					scoreChanged = true
 				case "b":
-					if score.AmpSpeaker.BankedAmpNotes > 0 {
-						score.AmpSpeaker.BankedAmpNotes = score.AmpSpeaker.BankedAmpNotes-1
+					if score.AmpSpeaker.NetAlgae > 0 {
+						score.AmpSpeaker.NetAlgae = score.AmpSpeaker.NetAlgae-1
 					}
 					log.Printf("b Pressed")
 					scoreChanged = true

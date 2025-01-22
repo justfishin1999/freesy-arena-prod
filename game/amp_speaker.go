@@ -19,6 +19,11 @@ type AmpSpeaker struct {
 	TeleopAmplifiedSpeakerNotes   int
 	LastAmplifiedTime             time.Time
 	lastAmplifiedSpeakerNotes     int
+	AutoCoral                [4]int
+	TeleopCoral              [4]int
+	ProcessedAlgae		 int
+	NetAlgae			 int
+	
 }
 
 // Updates the internal state of the AmpSpeaker based on the PLC inputs.
@@ -109,6 +114,10 @@ func (ampSpeaker *AmpSpeaker) AutoNotePoints() int {
 // Returns the total points scored in the Amp.
 func (ampSpeaker *AmpSpeaker) AmpPoints() int {
 	return 2*ampSpeaker.AutoAmpNotes + ampSpeaker.TeleopAmpNotes
+}
+
+func (ampSpeaker *AmpSpeaker) AlgaePoints() int {
+	return 6*ampSpeaker.ProcessedAlgae + 4*ampSpeaker.NetAlgae
 }
 
 // Returns the total points scored in the Speaker.

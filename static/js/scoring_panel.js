@@ -58,13 +58,16 @@ const handleRealtimeScore = function(data) {
     $(`#stageSide2Team${i1}`).attr("data-value", score.EndgameStatuses[i] === 4);
     $(`#stageSide${i}Microphone`).attr("data-value", score.MicrophoneStatuses[i]);
     $(`#stageSide${i}Trap`).attr("data-value", score.TrapStatuses[i]);
+    $("#endgameStatus" + i1 + ">.value").text(getEndgameStatusText(score.EndgameStatuses[i]));
+    $("#endgameStatus" + i1).attr("data-value", score.EndgameStatuses[i]);
   }
 
   //Some Diagnostis
   $("#currentScore").text("Current Score: " + realtimeScore.ScoreSummary.Score);
-  $("#currentAmpificationCount").text("Banked Amp Notes: " + score.AmpSpeaker.BankedAmpNotes);
-  $("#ampCount").text("Amp Total Count: " + ( score.AmpSpeaker.TeleopAmpNotes + 
-                                              score.AmpSpeaker.AutoAmpNotes));
+  //$("#currentAmpificationCount").text("Banked Amp Notes: " + score.AmpSpeaker.BankedAmpNotes);
+  $("#processorCount").text("Processed Algae Count: " + score.AmpSpeaker.ProcessedAlgae);
+  //$("#ampCount").text("Amp Total Count: " + ( score.AmpSpeaker.TeleopAmpNotes + 
+  //                                            score.AmpSpeaker.AutoAmpNotes));
   //$("#teleopAmpCount").text(score.TeleopAmpNotes);
   //$("#autoAmpCount").text(score.AutoAmpNotes);
   $("#speakerCount").text("Speaker Total Count: " + ( score.AmpSpeaker.AutoSpeakerNotes + 
@@ -84,13 +87,29 @@ const handleRealtimeScore = function(data) {
   $("#amplificationActive").css("background-color", !(realtimeScore.AmplifiedTimeRemainingSec > 0) && realtimeScore.AmplifiedTimePostWindow? "yellow" : "");
   $("#amplificationActive").css("color", !(realtimeScore.AmplifiedTimeRemainingSec > 0) && realtimeScore.AmplifiedTimePostWindow  ? "black" : "");
 
-  $("#autoSpeakerNotes").text(score.AmpSpeaker.AutoSpeakerNotes);
-  $("#autoSpeakerNotes").text(score.AmpSpeaker.AutoSpeakerNotes);
+  $("#processedAlgae").text(score.AmpSpeaker.ProcessedAlgae);
+  $("#netAlgae").text(score.AmpSpeaker.NetAlgae);
+  //$("#autoSpeakerNotes").text(score.AmpSpeaker.AutoSpeakerNotes);
+  //$("#autoSpeakerNotes").text(score.AmpSpeaker.AutoSpeakerNotes);
   $("#teleopAmplifiedSpeakerNotes").text(score.AmpSpeaker.TeleopAmplifiedSpeakerNotes);
   $("#teleopUnamplifiedSpeakerNotes").text(score.AmpSpeaker.TeleopUnamplifiedSpeakerNotes);
   $("#autoAmpNotes").text(score.AmpSpeaker.AutoAmpNotes);
   $("#teleopAmpNotes").text(score.AmpSpeaker.TeleopAmpNotes);
   $("#bankedAmpNotes").text(score.AmpSpeaker.BankedAmpNotes);
+};
+
+// Returns the display text corresponding to the given integer endgame status value.
+const getEndgameStatusText = function(level) {
+  switch (level) {
+    case 1:
+      return "Park";
+    case 2:
+      return "Shallow";
+    case 3:
+      return "Deep";
+    default:
+      return "None";
+  }
 };
 
 // Handles an element click and sends the appropriate websocket message.

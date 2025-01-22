@@ -6,15 +6,15 @@
 package game
 
 type ScoreSummary struct {
-	LeavePoints               int
+	LeavePoints          			int
 	AutoPoints                int
 	AmpPoints                 int
 	SpeakerPoints             int
 	StagePoints               int
-	MatchPoints               int
-	FoulPoints                int
-	Score                     int
-	CoopertitionCriteriaMet   bool
+	MatchPoints          			int
+	FoulPoints           			int
+	Score                			int
+	CoopertitionCriteriaMet   		bool
 	CoopertitionBonus         bool
 	NumNotes                  int
 	NumNotesGoal              int
@@ -22,6 +22,9 @@ type ScoreSummary struct {
 	EnsembleBonusRankingPoint bool
 	BonusRankingPoints        int
 	NumOpponentTechFouls      int
+
+	AlgaePoints int
+	EndgamePoints int
 
 	// Fields only needed for TBA.
 	ParkPoints      int

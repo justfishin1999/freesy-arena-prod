@@ -290,3 +290,15 @@ body {
 .btnA {
   background: rgb(0, 119, 255);
 }
+.endgame-status[data-value="0"] {
+  background-color: #333;
+}
+.endgame-status[data-value="1"] {
+  background-color: #652;
+}
+.endgame-status[data-value="2"] {
+  background-color: #263;
+}
+.endgame-status[data-value="3"] {
+  background-color: rgb(62, 136, 247);
+}
