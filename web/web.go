@@ -68,6 +68,9 @@ func NewWeb(arena *field.Arena) *Web {
 		"toUpper": func(str string) string {
 			return strings.ToUpper(str)
 		},
+		"nodeStateToInt": func(nodeState game.NodeState) int {
+			return int(nodeState)
+		},
 
 		// MatchType enum values.
 		"testMatch":          model.Test.Get,

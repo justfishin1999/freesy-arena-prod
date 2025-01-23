@@ -40,7 +40,8 @@ func (web *Web) scoringPanelHandler(w http.ResponseWriter, r *http.Request) {
 		*model.EventSettings
 		PlcIsEnabled bool
 		Alliance     string
-	}{web.arena.EventSettings, web.arena.Plc.IsEnabled(), alliance}
+		ValidGridNodeStates map[game.Row]map[int]map[game.NodeState]string
+	}{web.arena.EventSettings, web.arena.Plc.IsEnabled(), alliance, game.ValidGridNodeStates()}
 	err = template.ExecuteTemplate(w, "base_no_navbar", data)
 	if err != nil {
 		handleWebErr(w, err)
@@ -108,6 +109,9 @@ func (web *Web) scoringPanelWebsocketHandler(w http.ResponseWriter, r *http.Requ
 			args := struct {
 				TeamPosition int
 				StageIndex   int
+				GridRow      int
+				GridNode     int
+				NodeState    game.NodeState
 			}{}
 			err = mapstructure.Decode(data, &args)
 			if err != nil {
@@ -353,6 +357,35 @@ func (web *Web) scoringPanelWebsocketHandler(w http.ResponseWriter, r *http.Requ
 							web.arena.Plc.SetAlternateIOStopState(12,false)
 						}
 						log.Printf("A3 Pressed")
+						scoreChanged = true
+					}
+				case "gridAutoScoring":
+					if args.GridRow >= 0 && args.GridRow <= 4 && args.GridNode >= 0 && args.GridNode <= 12 {
+						log.Printf("Grid Auto Scoring Pressed")
+						log.Printf("Grid Row: %d", args.GridRow)
+						log.Printf("Grid Node: %d", args.GridNode)
+						score.Grid.AutoScoring[args.GridRow][args.GridNode] =
+							!score.Grid.AutoScoring[args.GridRow][args.GridNode]
+						scoreChanged = true
+					}
+				case "gridNode":
+					if args.GridRow >= 0 && args.GridRow <= 4 && args.GridNode >= 0 && args.GridNode <= 12{
+						log.Printf("Grid Node Pressed")
+						log.Printf("Grid Row: %d", args.GridRow)
+						log.Printf("Grid Node: %d", args.GridNode)
+						currentState := score.Grid.Nodes[args.GridRow][args.GridNode]
+						log.Printf("Current State: %d", currentState)
+						if currentState == args.NodeState {
+							score.Grid.Nodes[args.GridRow][args.GridNode] = game.Empty
+							if web.arena.MatchState == field.AutoPeriod || web.arena.MatchState == field.PausePeriod {
+								score.Grid.AutoScoring[args.GridRow][args.GridNode] = false
+							}
+						} else {
+							score.Grid.Nodes[args.GridRow][args.GridNode] = args.NodeState
+							if web.arena.MatchState == field.AutoPeriod || web.arena.MatchState == field.PausePeriod {
+								score.Grid.AutoScoring[args.GridRow][args.GridNode] = true
+							}
+						}
 						scoreChanged = true
 					}
 			}

@@ -8,6 +8,7 @@ package game
 type Score struct {
 	LeaveStatuses      [3]bool
 	AmpSpeaker         AmpSpeaker
+	Grid			   Grid
 	EndgameStatuses    [3]EndgameStatus
 	MicrophoneStatuses [3]bool
 	TrapStatuses       [3]bool
@@ -72,8 +73,9 @@ func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 			summary.LeavePoints += 3
 		}
 	}
+	autoGridPoints := score.Grid.AutoGamePiecePoints()
 	autoNotePoints := score.AmpSpeaker.AutoNotePoints()
-	summary.AutoPoints = summary.LeavePoints + autoNotePoints
+	summary.AutoPoints = summary.LeavePoints + autoNotePoints + autoGridPoints
 
 	// Calculate Amp and Speaker points.
 	summary.AmpPoints = score.AmpSpeaker.AmpPoints()
@@ -81,6 +83,8 @@ func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 
 	// Calculate Algae points.
 	summary.AlgaePoints = score.AmpSpeaker.AlgaePoints()
+
+	teleopGridPoints := score.Grid.TeleopGamePiecePoints()
 
 	// Calculate endgame points.
 	robotsByPosition := map[StagePosition]int{StageLeft: 0, CenterStage: 0, StageRight: 0}
@@ -127,10 +131,10 @@ func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 			summary.TrapPoints += 5
 		}
 	}
-	summary.StagePoints = summary.ParkPoints + summary.OnStagePoints + summary.HarmonyPoints + summary.SpotlightPoints +
-		summary.TrapPoints
-
-	summary.MatchPoints = summary.AlgaePoints + summary.EndgamePoints + summary.LeavePoints;// summary.LeavePoints + summary.AmpPoints + summary.SpeakerPoints + summary.StagePoints
+	/* summary.StagePoints = summary.ParkPoints + summary.OnStagePoints + summary.HarmonyPoints + summary.SpotlightPoints +
+		summary.TrapPoints */
+	summary.GridPoints = autoGridPoints + teleopGridPoints
+	summary.MatchPoints = summary.AlgaePoints + summary.EndgamePoints + summary.LeavePoints + summary.GridPoints;// summary.LeavePoints + summary.AmpPoints + summary.SpeakerPoints + summary.StagePoints
 
 	// Calculate penalty points.
 	for _, foul := range opponentScore.Fouls {

@@ -79,31 +79,36 @@
         {{end}}
 
       </div>
-      <!--<div id="stage">
-        <svg id="stageGraphic" viewBox="0 4 100 90">
-          <polygon points="5,5 95,5 50,78" fill="none" stroke="currentColor" stroke-width="0.2" />
-          <text x="50" y="7.5" text-anchor="middle" font-size="2" fill="currentColor">Center</text>
-          <text x="50" y="9.5" text-anchor="middle" font-size="2" fill="currentColor">Stage</text>
-          <text x="30" y="38" text-anchor="middle" font-size="2" fill="currentColor">Stage</text>
-          <text x="30" y="40" text-anchor="middle" font-size="2" fill="currentColor">Left</text>
-          <text x="69" y="38" text-anchor="middle" font-size="2" fill="currentColor">Stage</text>
-          <text x="69" y="40" text-anchor="middle" font-size="2" fill="currentColor">Right</text>
-          <text x="50" y="15" text-anchor="middle" font-size="2" fill="currentColor">Park</text>
-          <line x1="5" y1="85" x2="95" y2="85" stroke="currentColor" stroke-width="0.2" />
-          <text x="50" y="87.5" text-anchor="middle" font-size="2" fill="currentColor">Alliance Wall</text>
-        </svg>
-        <div id="stageLeft" class="stage-side">{{template "stageSide" dict "index" 0}}</div>
-        <div id="centerStage" class="stage-side">{{template "stageSide" dict "index" 1}}</div>
-        <div id="stageRight" class="stage-side">{{template "stageSide" dict "index" 2}}</div>
-        <div id="park" class="stage-side">
-          <div class="stage-side-col">
-            <div id="parkTeam1" class="team-1 boolean" onclick="handleClick('park', 1);"></div>
-            <div id="parkTeam2" class="team-2 boolean" onclick="handleClick('park', 2);"></div>
-            <div id="parkTeam3" class="team-3 boolean" onclick="handleClick('park', 3);"></div>
+      <div class="scoring-section">
+          <div class="scoring-column">
+            <div class="scoring-level">Level 4
+              <div class="grid-row-container">
+                {{template "gridRow" dict "rowIndex" 3 "validNodeStates" (index .ValidGridNodeStates 3)}}
+              </div>
+            </div>
+            <div class="scoring-level">Level 3
+              <div class="grid-row-container">
+                {{template "gridRow" dict "rowIndex" 2 "validNodeStates" (index .ValidGridNodeStates 2)}}
+              </div>
+            </div>
+            <div class="scoring-level">Level 2
+              <div class="grid-row-container">
+                {{template "gridRow" dict "rowIndex" 1 "validNodeStates" (index .ValidGridNodeStates 1)}}
+              </div>
+            </div>
+            <div class="scoring-level">Level 1
+                            <!-- {{template "4goal" dict "btn1" "P" "txt1" "Auto+" "btn2" "p" "txt2" "Auto-" "count1" "zone1level5" "btn3" "P" "txt1" "Teliop+" "btn4" "p" "txt2" "Teliop-" "count2" "zone1level5"}}
+ -->
+            </div>
           </div>
+<!--           <div class="scoring-column">
+            <div class="scoring-level">Level 5</div>
+            <div class="scoring-level">Level 4</div>
+            <div class="scoring-level">Level 3</div>
+            <div class="scoring-level">Level 2</div>
+            <div class="scoring-level">Level 1</div>
+          </div> -->
         </div>
-      </div>-->
-    </div>
     <button id="toggleButton">Show E-Stops</button>
     <div class="eStops hidden">EStops
       {{template "2stops" dict "btn1" "E1" "txt1" "EStop" "btn2" "A1" "txt2" "AStop"}}
@@ -188,6 +193,40 @@
   </div>
 </div>
 {{end}}
+{{define "4goal"}}
+<div class="goal">
+  <div class="number-button btn1" onclick="handleClick('{{.btn1}}');">
+    <div class="shortcut">{{.btn1}}</div>
+    <div class="icon">
+      {{.txt1}}
+    </div>
+    <div class="shortcut" style="opacity: 0;">{{.btn1}}</div>
+  </div>
+  <div id={{.count1}}></div>
+  <div class="number-button btn2" onclick="handleClick('{{.btn2}}');">
+    <div class="shortcut">{{.btn2}}</div>
+    <div class="icon">
+      {{.txt2}}
+    </div>
+    <div class="shortcut" style="opacity: 0;">{{.minus}}</div>
+  </div>
+  <div class="number-button btn3" onclick="handleClick('{{.btn3}}');">
+    <div class="shortcut">{{.btn3}}</div>
+    <div class="icon">
+      {{.txt3}}
+    </div>
+    <div class="shortcut" style="opacity: 0;">{{.btn3}}</div>
+  </div>
+  <div id={{.count2}}></div>
+  <div class="number-button btn4" onclick="handleClick('{{.btn4}}');">
+    <div class="shortcut">{{.btn4}}</div>
+    <div class="icon">
+      {{.txt4}}
+    </div>
+    <div class="shortcut" style="opacity: 0;">{{.minus}}</div>
+  </div>
+</div>
+{{end}}
 
 {{define "2stops"}}
 <div class="teamEstopPanle">
@@ -208,5 +247,33 @@
     </div>
     <div class="shortcut" style="opacity: 0;">{{.minus}}</div>
   </div>
+</div>
+{{end}}
+{{define "gridRow"}}
+<div class="grid-row">
+  {{range $i, $validStates := .validNodeStates}}
+    {{template "gridNode" dict "rowIndex" $.rowIndex "nodeIndex" $i "validStates" $validStates}}
+  {{end}}
+</div>
+{{end}}
+{{define "gridNode"}}
+<div class="grid-node" data-node="{{.nodeIndex}}">
+  <div id="gridAutoScoringRow{{$.rowIndex}}Node{{$.nodeIndex}}" class="grid-node-auto"
+    onclick="handleClick('gridAutoScoring', 0, 0,{{$.rowIndex}}, {{$.nodeIndex}})">
+    Auto
+  </div>
+  <div id="gridNodeStatesRow{{$.rowIndex}}Node{{$.nodeIndex}}" class="grid-node-states">
+    {{range $i, $state := .validStates}}
+      {{if ne $state "Empty"}}
+        {{template "gridNodeButton" dict "i" $i "state" $state "rowIndex" $.rowIndex "nodeIndex" $.nodeIndex}}
+      {{end}}
+    {{end}}
+  </div>
+</div>
+{{end}}
+{{define "gridNodeButton"}}
+<div class="grid-node-button" data-node-state="{{nodeStateToInt .i}}"
+  onclick="handleClick('gridNode', 0, 0, {{.rowIndex}}, {{.nodeIndex}}, {{nodeStateToInt .i}})">
+  <img src="/static/img/node_states/{{.state}}.svg" />
 </div>
 {{end}}

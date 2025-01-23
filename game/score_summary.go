@@ -8,6 +8,7 @@ package game
 type ScoreSummary struct {
 	LeavePoints          			int
 	AutoPoints                int
+	GridPoints                      int
 	AmpPoints                 int
 	SpeakerPoints             int
 	StagePoints               int

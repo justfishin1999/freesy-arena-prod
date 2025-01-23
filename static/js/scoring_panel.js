@@ -96,6 +96,16 @@ const handleRealtimeScore = function(data) {
   $("#autoAmpNotes").text(score.AmpSpeaker.AutoAmpNotes);
   $("#teleopAmpNotes").text(score.AmpSpeaker.TeleopAmpNotes);
   $("#bankedAmpNotes").text(score.AmpSpeaker.BankedAmpNotes);
+
+  for (let i = 0; i < 4; i++) {
+    for (let j = 0; j < 12; j++) {
+      $(`#gridAutoScoringRow${i}Node${j}`).attr("data-value", score.Grid.AutoScoring[i][j]);
+      $(`#gridNodeStatesRow${i}Node${j}`).children().each(function() {
+        const element = $(this);
+        element.attr("data-value", element.attr("data-node-state") === score.Grid.Nodes[i][j].toString());
+      });
+    }
+  }
 };
 
 // Returns the display text corresponding to the given integer endgame status value.
@@ -113,8 +123,8 @@ const getEndgameStatusText = function(level) {
 };
 
 // Handles an element click and sends the appropriate websocket message.
-const handleClick = function(command, teamPosition = 0, stageIndex = 0) {
-  websocket.send(command, {TeamPosition: teamPosition, StageIndex: stageIndex});
+const handleClick = function(command, teamPosition = 0, stageIndex = 0, gridRow = 0, gridNode = 0, nodeState = 0) {
+  websocket.send(command, {TeamPosition: teamPosition, StageIndex: stageIndex, GridRow: gridRow, GridNode: gridNode, NodeState: nodeState});
 };
 
 // Sends a websocket message to indicate that the score for this alliance is ready.

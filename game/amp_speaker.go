@@ -19,8 +19,6 @@ type AmpSpeaker struct {
 	TeleopAmplifiedSpeakerNotes   int
 	LastAmplifiedTime             time.Time
 	lastAmplifiedSpeakerNotes     int
-	AutoCoral                [4]int
-	TeleopCoral              [4]int
 	ProcessedAlgae		 int
 	NetAlgae			 int
 	
