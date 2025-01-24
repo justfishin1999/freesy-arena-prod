@@ -96,18 +96,17 @@
                 {{template "gridRow" dict "rowIndex" 1 "validNodeStates" (index .ValidGridNodeStates 1)}}
               </div>
             </div>
-            <div class="scoring-level">Level 1
-                            <!-- {{template "4goal" dict "btn1" "P" "txt1" "Auto+" "btn2" "p" "txt2" "Auto-" "count1" "zone1level5" "btn3" "P" "txt1" "Teliop+" "btn4" "p" "txt2" "Teliop-" "count2" "zone1level5"}}
- -->
+            <div class="scoring-level">Level 1</div>
+              <div class="template-container">
+                <div class="template-group">
+                  {{template "4goal" dict "btn1" "A" "txt1" "Auto+" "btn2" "a" "txt2" "Auto-" "count" "autoLvL1_0" "btn3" "T" "txt3" "Teliop+" "btn4" "t" "txt4" "Teliop-" "count2" "teliopLvL1_0"}}
+                </div>
+                <div class="template-group">
+                  {{template "4goal" dict "btn1" "R" "txt1" "Auto+" "btn2" "r" "txt2" "Auto-" "count" "autoLvL1_1" "btn3" "M" "txt3" "Teliop+" "btn4" "m" "txt4" "Teliop-" "count2" "teliopLvL1_1"}}
+                </div>
+              </div>
             </div>
           </div>
-<!--           <div class="scoring-column">
-            <div class="scoring-level">Level 5</div>
-            <div class="scoring-level">Level 4</div>
-            <div class="scoring-level">Level 3</div>
-            <div class="scoring-level">Level 2</div>
-            <div class="scoring-level">Level 1</div>
-          </div> -->
         </div>
     <button id="toggleButton">Show E-Stops</button>
     <div class="eStops hidden">EStops
@@ -194,7 +193,7 @@
 </div>
 {{end}}
 {{define "4goal"}}
-<div class="goal">
+<div class="goal4">
   <div class="number-button btn1" onclick="handleClick('{{.btn1}}');">
     <div class="shortcut">{{.btn1}}</div>
     <div class="icon">
@@ -202,7 +201,7 @@
     </div>
     <div class="shortcut" style="opacity: 0;">{{.btn1}}</div>
   </div>
-  <div id={{.count1}}></div>
+  <div id={{.count}}></div>
   <div class="number-button btn2" onclick="handleClick('{{.btn2}}');">
     <div class="shortcut">{{.btn2}}</div>
     <div class="icon">
@@ -210,6 +209,9 @@
     </div>
     <div class="shortcut" style="opacity: 0;">{{.minus}}</div>
   </div>
+
+<!-- </div>
+<div class="goal"> -->
   <div class="number-button btn3" onclick="handleClick('{{.btn3}}');">
     <div class="shortcut">{{.btn3}}</div>
     <div class="icon">

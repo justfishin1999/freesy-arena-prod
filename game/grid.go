@@ -3,6 +3,8 @@ package game
 type Grid struct {
 	AutoScoring [4][12]bool
 	Nodes [4][12]NodeState
+	AutoLvL1Count [2]int
+	TeliopLvL1Count [2]int
 }
 
 //go:generate stringer -type=NodeState
@@ -54,6 +56,8 @@ func (grid *Grid) AutoGamePiecePoints() int {
 			}
 		}
 	}
+	points += grid.AutoLvL1Count[0]*autoPoints[1]
+	points += grid.AutoLvL1Count[1]*autoPoints[1]
 	return points
 }
 
@@ -67,6 +71,8 @@ func (grid *Grid) TeleopGamePiecePoints() int {
 			}
 		}
 	}
+	points += grid.TeliopLvL1Count[0]*teleopPoints[1]
+	points += grid.TeliopLvL1Count[1]*teleopPoints[1]
 	return points
 }
 

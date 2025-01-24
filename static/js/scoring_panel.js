@@ -89,6 +89,10 @@ const handleRealtimeScore = function(data) {
 
   $("#processedAlgae").text(score.AmpSpeaker.ProcessedAlgae);
   $("#netAlgae").text(score.AmpSpeaker.NetAlgae);
+  $("#autoLvL1_0").text(score.Grid.AutoLvL1Count[0]);
+  $("#teliopLvL1_0").text(score.Grid.TeliopLvL1Count[0]);
+  $("#autoLvL1_1").text(score.Grid.AutoLvL1Count[1]);
+  $("#teliopLvL1_1").text(score.Grid.TeliopLvL1Count[1]);
   //$("#autoSpeakerNotes").text(score.AmpSpeaker.AutoSpeakerNotes);
   //$("#autoSpeakerNotes").text(score.AmpSpeaker.AutoSpeakerNotes);
   $("#teleopAmplifiedSpeakerNotes").text(score.AmpSpeaker.TeleopAmplifiedSpeakerNotes);
