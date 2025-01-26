@@ -418,3 +418,17 @@ body {
 .template-group:last-child {
   margin-right: 0; /* Remove the margin from the last group */
 }
+
+.side-header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.side-header {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  border: 1px solid #ccc; /* Optional: Add a border around each column */
+}
