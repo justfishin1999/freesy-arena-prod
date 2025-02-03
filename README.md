@@ -4,10 +4,12 @@ Freesy Arena is a fork of the open-source **Cheesy Arena**, developed with permi
 
 ## Key Features
 
-- **Live Manual Scoring of Notes**  
+- **Live Manual Scoring of Algea and Coral**  
   Allows real-time manual input of scores during matches, ideal for games with subjective or complex scoring systems.
 
-- **Manual Co-op and Amplification from Score Panel**  
+- **Estop and Astop**  
+  Available on the Aliance Scoreing screens when *Alternate IO is enabled on the Setting Page. [Enable Alternate IO (IE: Raspberry Pi)]
+  More information comming. Alternate IO alow web enabled Microcontrolers a way to control IO through API added in Freezy Arena. https://github.com/cpapplefamily/Freezy-Estops is a project I'm working on using differnt ESP32 hardware
 
 - **4-8 Team Double Eliminations**  
   Supports smaller-scale tournaments with a double-elimination format, accommodating 4 to 8 teams.
