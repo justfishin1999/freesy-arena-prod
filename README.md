@@ -9,7 +9,7 @@ Freesy Arena is a fork of the open-source **Cheesy Arena**, developed with permi
 
 - **Estop and Astop**  
   Available on the Aliance Scoreing screens when *Alternate IO is enabled on the Setting Page. [Enable Alternate IO (IE: Raspberry Pi)]
-  More information comming. Alternate IO alow web enabled Microcontrolers a way to control IO through API added in Freezy Arena. https://github.com/cpapplefamily/Freezy-Estops is a project I'm working on using differnt ESP32 hardware
+  More information comming. Alternate IO alow web enabled Microcontrolers a way to control IO through API added in Freezy Arena. https://github.com/cpapplefamily/Freezy-Estops is a project I'm working on using differnt ESP32 hardwaret
 
 - **4-8 Team Double Eliminations**  
   Supports smaller-scale tournaments with a double-elimination format, accommodating 4 to 8 teams.
