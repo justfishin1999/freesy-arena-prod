@@ -118,6 +118,10 @@ func (grid *Grid) HasAtLeastThreeRowsWithFiveCoral() bool {
     return count >= 3
 }
 
+func (grid *Grid) TotalCoralScoredLvl1() int {
+	return grid.AutoLvL1Count[0] + grid.AutoLvL1Count[1] + grid.TeliopLvL1Count[0] + grid.TeliopLvL1Count[1]
+}
+
 /* func (grid *Grid) SuperchargedPoints() int {
 	return 3 * grid.NumSuperchargedNodes()
 }

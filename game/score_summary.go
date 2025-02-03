@@ -24,6 +24,9 @@ type ScoreSummary struct {
 	BonusRankingPoints        int
 	NumOpponentTechFouls      int
 
+	NumAlgae int
+	NumAlgaeGoal int
+	NumLvLCoral [4]int
 	AlgaePoints int
 	EndgamePoints int
 	CoralRankingPoint bool

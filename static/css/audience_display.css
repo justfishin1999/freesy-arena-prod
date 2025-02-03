@@ -136,7 +136,17 @@ html {
 .score-right .score-fields {
   justify-content: flex-end;
 }
-.score-notes {
+.score-coral {
+  width: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: "FuturaLTBold";
+  font-size: 15px;
+  color: #fff;
+}
+.score-algae {
   width: 100px;
   display: flex;
   flex-direction: column;
@@ -146,7 +156,7 @@ html {
   font-size: 20px;
   color: #fff;
 }
-.score-notes i {
+.score-algae i {
   margin-top: -3px;
   font-size: 25px;
 }
@@ -655,4 +665,24 @@ html {
   display: none;
   font-family: "FuturaLTBold";
   line-height: 87px;
+}
+.scaled-image {
+  width: 50px;
+  height: 50px;
+}
+.level-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1px; /* Adjust as needed for spacing */
+  white-space: nowrap; /* Prevent text from wrapping */
+}
+
+.level-row div {
+  flex: 1;
+  padding-right: 2px; /* Add space between the text and the count */
+}
+
+.level-row span {
+  flex: 1;
+  text-align: right; /* Align the count to the right */
 }

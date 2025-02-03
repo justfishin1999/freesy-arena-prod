@@ -153,11 +153,20 @@ const handleMatchTime = function(data) {
 const handleRealtimeScore = function(data) {
   $(`#${redSide}ScoreNumber`).text(data.Red.ScoreSummary.Score - data.Red.ScoreSummary.StagePoints);
   $(`#${blueSide}ScoreNumber`).text(data.Blue.ScoreSummary.Score - data.Blue.ScoreSummary.StagePoints);
+  
+  $(`#${redSide}LvL4Count`).text(data.Red.ScoreSummary.NumLvLCoral[3]);
+  $(`#${redSide}LvL3Count`).text(data.Red.ScoreSummary.NumLvLCoral[2]);
+  $(`#${redSide}LvL2Count`).text(data.Red.ScoreSummary.NumLvLCoral[1]);
+  $(`#${redSide}LvL1Count`).text(data.Red.ScoreSummary.NumLvLCoral[0]);
+  $(`#${blueSide}LvL4Count`).text(data.Blue.ScoreSummary.NumLvLCoral[3]);
+  $(`#${blueSide}LvL3Count`).text(data.Blue.ScoreSummary.NumLvLCoral[2]);
+  $(`#${blueSide}LvL2Count`).text(data.Blue.ScoreSummary.NumLvLCoral[1]);
+  $(`#${blueSide}LvL1Count`).text(data.Blue.ScoreSummary.NumLvLCoral[0]);
 
-  $(`#${redSide}NoteNumerator`).text(data.Red.ScoreSummary.NumNotes);
-  $(`#${redSide}NoteDenominator`).text(data.Red.ScoreSummary.NumNotesGoal);
-  $(`#${blueSide}NoteNumerator`).text(data.Blue.ScoreSummary.NumNotes);
-  $(`#${blueSide}NoteDenominator`).text(data.Blue.ScoreSummary.NumNotesGoal);
+  $(`#${redSide}AlgaeNumerator`).text(data.Red.ScoreSummary.NumAlgae);
+  $(`#${redSide}AlgaeDenominator`).text(data.Red.ScoreSummary.NumAlgaeGoal);
+  $(`#${blueSide}AlgaeNumerator`).text(data.Blue.ScoreSummary.NumAlgae);
+  $(`#${blueSide}AlgaeDenominator`).text(data.Blue.ScoreSummary.NumAlgaeGoal);
   if (currentMatch.Type === matchTypePlayoff) {
     $(`#${redSide}NoteDenominator`).hide();
     $(`#${blueSide}NoteDenominator`).hide();

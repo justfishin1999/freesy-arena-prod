@@ -32,6 +32,7 @@ var CoralRPThresholdPerLevel_WithoutCoop = 5
 var CoralRPThresholdPerLevel_WithCoop = 5
 var CoralRPThresholdRequiredLevels_WithoutCoop = 4
 var CoralRPThresholdRequiredLevels_WithCoop = 3
+var AlgaeCoopThreshold = 2
 
 // Represents the state of a robot at the end of the match.
 type EndgameStatus int
@@ -159,6 +160,12 @@ func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 	// Calculate bonus ranking points.
 /* 	summary.NumNotes = score.AmpSpeaker.TotalNotesScored()
 	summary.NumNotesGoal = MelodyBonusThresholdWithoutCoop */
+	summary.NumAlgae = score.AmpSpeaker.ProcessedAlgae
+	summary.NumAlgaeGoal = AlgaeCoopThreshold
+	summary.NumLvLCoral[0] = score.Grid.TotalCoralScoredLvl1()
+	summary.NumLvLCoral[1] = score.Grid.TotalCoralScoredPerRow()[1]
+	summary.NumLvLCoral[2] = score.Grid.TotalCoralScoredPerRow()[2]
+	summary.NumLvLCoral[3] = score.Grid.TotalCoralScoredPerRow()[3]
 
 	if score.AmpSpeaker.ProcessedAlgae >= 2 {
 		summary.CoopertitionCriteriaMet = true

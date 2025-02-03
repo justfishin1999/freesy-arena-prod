@@ -32,55 +32,94 @@
                 <img class="avatar" id="leftTeam3Avatar" src="" />
               </div>
               <div class="score-fields">
-                <div class="score-notes">
+                <div class="score-algae">
                   <div>
-                    <span id="leftNoteNumerator"></span>
-                    <span class="note-splitter">/</span>
-                    <span id="leftNoteDenominator"></span>
+                    <span id="leftAlgaeNumerator"></span>
+                    <span class="algae-splitter">/</span>
+                    <span id="leftAlgaeDenominator"></span>
                   </div>
-                  <i class="bi-music-note-beamed"></i>
+                  <img src="/static/img/fd_frc_reefscape_coral_03.png" alt="Music Note" class="scaled-image"/>
+                  <!-- <i class="bi-music-note-beamed"></i> -->
                 </div>
-                <div class="score-lights" id="leftLights">
+                <div class="score-coral">
+                  <div class="level-row">
+                    <div>LvL 4 - </div>
+                    <span id="leftLvL4Count"></span>
+                  </div>
+                  <div class="level-row">
+                    <div>LvL 3 - </div>
+                    <span id="leftLvL3Count"></span>
+                  </div>
+                  <div class="level-row">
+                    <div>LvL 2 - </div>
+                    <span id="leftLvL2Count"></span>
+                  </div>
+                  <div class="level-row">
+                    <div>LvL 1 - </div>
+                    <span id="leftLvL1Count"></span>
+                  </div>
+                </div>
+                <!-- <div class="score-lights" id="leftLights">
                   <svg width="45" height="100">
                     <rect class="amp-light amp-high" x="17" y="30" width="28" height="18" fill="white" />
                     <rect class="amp-light amp-low" x="17" y="55" width="28" height="18" fill="white" />
                     <rect class="amp-light amp-coop" x="0" y="30" width="10" height="43" fill="white" />
                   </svg>
-                </div>
+                </div> -->
                 <div class="score-amplified" id="leftAmplified">
                   <svg width="70" height="100" id="progress">
                     <circle cx="35" cy="50" r="25" fill="none" stroke="white" stroke-width="5"
                       stroke-dasharray="158 158" stroke-dashoffset="5" transform="rotate(90, 35, 50)"/>
-                    <text class="progress-time" x="35.5" y="61" font-size="30" text-anchor="middle" fill="white"></text>
-                  </svg>
-                </div>
-              </div>
-              <div class="score-number" id="leftScoreNumber"></div>
-            </div>
-            <div class="score score-right reversible-right">
-              <div class="score-number" id="rightScoreNumber"></div>
-              <div class="score-fields">
-                <div class="score-amplified" id="rightAmplified">
-                  <svg width="70" height="100" id="progress">
-                    <circle cx="35" cy="50" r="25" fill="none" stroke="white" stroke-width="5"
-                      stroke-dasharray="158 158" stroke-dashoffset="-5" transform="rotate(90, 35, 50)"/>
-                    <text class="progress-time" x="35.5" y="61" font-size="30" text-anchor="middle" fill="white"></text>
-                  </svg>
-                </div>
-                <div class="score-lights" id="rightLights">
-                  <svg width="45" height="100">
-                    <rect class="amp-light amp-high" x="0" y="30" width="28" height="18" fill="white" />
-                    <rect class="amp-light amp-low" x="0" y="55" width="28" height="18" fill="white" />
-                    <rect class="amp-light amp-coop" x="35" y="30" width="10" height="43" fill="white" />
-                  </svg>
-                </div>
-                <div class="score-notes">
-                  <div>
-                    <span id="rightNoteNumerator"></span>
-                    <span class="note-splitter">/</span>
-                    <span id="rightNoteDenominator"></span>
+                      <text class="progress-time" x="35.5" y="61" font-size="30" text-anchor="middle" fill="white"></text>
+                    </svg>
                   </div>
-                  <i class="bi-music-note-beamed"></i>
+                </div>
+                <div class="score-number" id="leftScoreNumber"></div>
+              </div>
+              <div class="score score-right reversible-right">
+                <div class="score-number" id="rightScoreNumber"></div>
+                <div class="score-fields">
+                  <div class="score-amplified" id="rightAmplified">
+                    <svg width="70" height="100" id="progress">
+                      <circle cx="35" cy="50" r="25" fill="none" stroke="white" stroke-width="5"
+                      stroke-dasharray="158 158" stroke-dashoffset="-5" transform="rotate(90, 35, 50)"/>
+                      <text class="progress-time" x="35.5" y="61" font-size="30" text-anchor="middle" fill="white"></text>
+                    </svg>
+                  </div>
+                  <div class="score-coral">
+                    <div class="level-row">
+                      <div>LvL 4 - </div>
+                      <span id="rightLvL4Count"></span>
+                    </div>
+                    <div class="level-row">
+                      <div>LvL 3 - </div>
+                      <span id="rightLvL3Count"></span>
+                    </div>
+                    <div class="level-row">
+                      <div>LvL 2 - </div>
+                      <span id="rightLvL2Count"></span>
+                    </div>
+                    <div class="level-row">
+                      <div>LvL 1 - </div>
+                      <span id="rightLvL1Count"></span>
+                    </div>
+                  </div>
+                    <!-- <i class="bi-music-note-beamed"></i> -->
+                  <!-- <div class="score-lights" id="rightLights">
+                    <svg width="45" height="100">
+                      <rect class="amp-light amp-high" x="0" y="30" width="28" height="18" fill="white" />
+                      <rect class="amp-light amp-low" x="0" y="55" width="28" height="18" fill="white" />
+                      <rect class="amp-light amp-coop" x="35" y="30" width="10" height="43" fill="white" />
+                    </svg>
+                  </div> -->
+                  <div class="score-algae">
+                    <div>
+                      <span id="rightAlgaeNumerator"></span>
+                      <span class="algae-splitter">/</span>
+                      <span id="rightAlgaeDenominator"></span>
+                    </div>
+                    <img src="/static/img/fd_frc_reefscape_coral_03.png" alt="Music Note" class="scaled-image"/>
+                  <!-- <i class="bi-music-note-beamed"></i> -->
                 </div>
               </div>
               <div class="avatars">
