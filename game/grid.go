@@ -76,6 +76,48 @@ func (grid *Grid) TeleopGamePiecePoints() int {
 	return points
 }
 
+// TotalCoralScoredPerRow returns the total number of coral scored in both auto and teleop per row.
+func (grid *Grid) TotalCoralScoredPerRow() [rowCount]int {
+    var totalCoralPerRow [rowCount]int
+    for row := lvl1; row < rowCount; row++ {
+        for column := 0; column < 12; column++ {
+            autoPieces, teleopPieces := grid.numScoredAutoTeleopGamePieces(row, column)
+            totalCoralPerRow[row] += autoPieces + teleopPieces
+        }
+    }
+    return totalCoralPerRow
+}
+
+// HasAtLeastFourCoralPerRow checks if each row has at least 5 coral scored.
+func (grid *Grid) HasAtLeastFiveCoralPerRow() bool {
+    totalCoralPerRow := grid.TotalCoralScoredPerRow()
+    count := 0
+    for _, coralCount := range totalCoralPerRow {
+        if coralCount >= 5 {
+            count++
+        }
+    }
+	if grid.AutoLvL1Count[0] + grid.AutoLvL1Count[1] + grid.TeliopLvL1Count[0] + grid.TeliopLvL1Count[1] >= 5 {
+		count++
+	}
+    return count >= 3
+}
+
+// HasAtLeastThreeRowsWithFiveCoral checks if at least 3 rows have at least 5 coral scored.
+func (grid *Grid) HasAtLeastThreeRowsWithFiveCoral() bool {
+    totalCoralPerRow := grid.TotalCoralScoredPerRow()
+    count := 0
+    for _, coralCount := range totalCoralPerRow {
+        if coralCount >= 5 {
+            count++
+        }
+    }
+	if grid.AutoLvL1Count[0] + grid.AutoLvL1Count[1] + grid.TeliopLvL1Count[0] + grid.TeliopLvL1Count[1] >= 5 {
+		count++
+	}
+    return count >= 3
+}
+
 /* func (grid *Grid) SuperchargedPoints() int {
 	return 3 * grid.NumSuperchargedNodes()
 }

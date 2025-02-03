@@ -74,12 +74,12 @@ func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 		}
 	}
 	autoGridPoints := score.Grid.AutoGamePiecePoints()
-	autoNotePoints := score.AmpSpeaker.AutoNotePoints()
-	summary.AutoPoints = summary.LeavePoints + autoNotePoints + autoGridPoints
+	//autoNotePoints := score.AmpSpeaker.AutoNotePoints()
+	summary.AutoPoints = summary.LeavePoints + autoGridPoints //+ autoNotePoints
 
 	// Calculate Amp and Speaker points.
-	summary.AmpPoints = score.AmpSpeaker.AmpPoints()
-	summary.SpeakerPoints = score.AmpSpeaker.SpeakerPoints()
+	//summary.AmpPoints = score.AmpSpeaker.AmpPoints()
+	//summary.SpeakerPoints = score.AmpSpeaker.SpeakerPoints()
 
 	// Calculate Algae points.
 	summary.AlgaePoints = score.AmpSpeaker.AlgaePoints()
@@ -87,7 +87,7 @@ func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 	teleopGridPoints := score.Grid.TeleopGamePiecePoints()
 
 	// Calculate endgame points.
-	robotsByPosition := map[StagePosition]int{StageLeft: 0, CenterStage: 0, StageRight: 0}
+	//robotsByPosition := map[StagePosition]int{StageLeft: 0, CenterStage: 0, StageRight: 0}
 	for _, status := range score.EndgameStatuses {
 		switch status {
 		case EndgameParkedInBargeZone:
@@ -110,7 +110,7 @@ func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 		default:
 		}
 	}
-	totalOnstageRobots := 0
+	/* totalOnstageRobots := 0
 	for i := 0; i < 3; i++ {
 		stagePosition := StagePosition(i)
 		onstageRobots := robotsByPosition[stagePosition]
@@ -130,7 +130,7 @@ func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 		if score.TrapStatuses[i] {
 			summary.TrapPoints += 5
 		}
-	}
+	} */
 	/* summary.StagePoints = summary.ParkPoints + summary.OnStagePoints + summary.HarmonyPoints + summary.SpotlightPoints +
 		summary.TrapPoints */
 	summary.GridPoints = autoGridPoints + teleopGridPoints
@@ -148,7 +148,8 @@ func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 		if rule != nil {
 			// Check for the opponent fouls that automatically trigger a ranking point.
 			if rule.IsRankingPoint {
-				summary.EnsembleBonusRankingPoint = true
+				//summary.EnsembleBonusRankingPoint = true
+				summary.BargeRankingPoint = true
 			}
 		}
 	}
@@ -156,17 +157,54 @@ func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 	summary.Score = summary.MatchPoints + summary.FoulPoints
 
 	// Calculate bonus ranking points.
-	summary.NumNotes = score.AmpSpeaker.TotalNotesScored()
-	summary.NumNotesGoal = MelodyBonusThresholdWithoutCoop
-	if MelodyBonusThresholdWithCoop > 0 {
+/* 	summary.NumNotes = score.AmpSpeaker.TotalNotesScored()
+	summary.NumNotesGoal = MelodyBonusThresholdWithoutCoop */
+
+	if score.AmpSpeaker.ProcessedAlgae >= 2 {
+		summary.CoopertitionCriteriaMet = true
+	}else{
+		summary.CoopertitionCriteriaMet = false
+	}
+	
+	// Calculate the Auto Ranking Point
+	if score.Grid.AutoGamePiecePoints() > 0 && allLeaveStatusesTrue(score.LeaveStatuses[:]) {
+		summary.AutoRankingPoint = true
+		summary.BonusRankingPoints++
+	}
+
+	// Calculate the Coral Ranking Point
+	summary.CoopertitionBonus = summary.CoopertitionCriteriaMet && opponentScore.AmpSpeaker.CoopActivated
+	
+	score.Grid.HasAtLeastFiveCoralPerRow()
+
+	if summary.CoopertitionBonus {
+		if score.Grid.HasAtLeastThreeRowsWithFiveCoral() {
+			summary.CoralRankingPoint = true
+			summary.BonusRankingPoints++
+		}
+	}else{
+		if score.Grid.HasAtLeastFiveCoralPerRow() {
+			summary.CoralRankingPoint = true
+			summary.BonusRankingPoints++
+		}
+	}
+
+	// Calculate the Barge Ranking Point
+	if summary.EndgamePoints >= 14 {
+		summary.BargeRankingPoint = true
+		summary.BonusRankingPoints++
+	}
+
+/* 	if MelodyBonusThresholdWithCoop > 0 {
 		// A MelodyBonusThresholdWithCoop of 0 disables the coopertition bonus.
-		summary.CoopertitionCriteriaMet = score.AmpSpeaker.CoopActivated
+		//summary.CoopertitionCriteriaMet = score.AmpSpeaker.CoopActivated
 		summary.CoopertitionBonus = summary.CoopertitionCriteriaMet && opponentScore.AmpSpeaker.CoopActivated
 		if summary.CoopertitionBonus {
 			summary.NumNotesGoal = MelodyBonusThresholdWithCoop
-		}
-	}
-	if summary.NumNotes >= summary.NumNotesGoal {
+		} 
+	} */
+
+	/* if summary.NumNotes >= summary.NumNotesGoal {
 		summary.MelodyBonusRankingPoint = true
 	}
 	if summary.StagePoints >= ensembleBonusPointThreshold && totalOnstageRobots >= ensembleBonusRobotThreshold {
@@ -179,8 +217,18 @@ func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 	if summary.EnsembleBonusRankingPoint {
 		summary.BonusRankingPoints++
 	}
-
+ */
 	return summary
+}
+
+// Helper function to check if all elements in LeaveStatuses are true
+func allLeaveStatusesTrue(leaveStatuses []bool) bool {
+    for _, status := range leaveStatuses {
+        if !status {
+            return false
+        }
+    }
+    return true
 }
 
 // Returns true if and only if all fields of the two scores are equal.

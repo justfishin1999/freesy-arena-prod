@@ -239,10 +239,28 @@ const handleScorePosted = function(data) {
     setTeamInfo(redSide, 4, 0, data.RedCards, data.RedRankings);
   }
   $(`#${redSide}FinalLeavePoints`).text(data.RedScoreSummary.LeavePoints);
-  $(`#${redSide}FinalSpeakerPoints`).text(data.RedScoreSummary.SpeakerPoints);
-  $(`#${redSide}FinalAmpPoints`).text(data.RedScoreSummary.AmpPoints);
+  $(`#${redSide}FinalAlgaePoints`).text(data.RedScoreSummary.AlgaePoints);
+  $(`#${redSide}FinalCoralPoints`).text(data.RedScoreSummary.GridPoints);
   $(`#${redSide}FinalStagePoints`).text(data.RedScoreSummary.StagePoints);
   $(`#${redSide}FinalFoulPoints`).text(data.RedScoreSummary.FoulPoints);
+  $(`#${redSide}FinalAutoBonusRankingPoint`).html(
+    data.RedScoreSummary.AutoRankingPoint ? "&#x2714;" : "&#x2718;"
+  );
+  $(`#${redSide}FinalAutoBonusRankingPoint`).attr(
+    "data-checked", data.RedScoreSummary.AutoRankingPoint
+  );
+  $(`#${redSide}FinalCoralBonusRankingPoint`).html(
+    data.RedScoreSummary.CoralRankingPoint ? "&#x2714;" : "&#x2718;"
+  );
+  $(`#${redSide}FinalCoralBonusRankingPoint`).attr(
+    "data-checked", data.RedScoreSummary.CoralRankingPoint
+  );
+  $(`#${redSide}FinalBargeBonusRankingPoint`).html(
+    data.RedScoreSummary.BargeRankingPoint ? "&#x2714;" : "&#x2718;"
+  );
+  $(`#${redSide}FinalBargeBonusRankingPoint`).attr(
+    "data-checked", data.RedScoreSummary.BargeRankingPoint
+  );
   $(`#${redSide}FinalMelodyBonusRankingPoint`).html(
     data.RedScoreSummary.MelodyBonusRankingPoint ? "&#x2714;" : "&#x2718;"
   );
@@ -273,10 +291,28 @@ const handleScorePosted = function(data) {
     setTeamInfo(blueSide, 4, 0, data.BlueCards, data.BlueRankings);
   }
   $(`#${blueSide}FinalLeavePoints`).text(data.BlueScoreSummary.LeavePoints);
-  $(`#${blueSide}FinalSpeakerPoints`).text(data.BlueScoreSummary.SpeakerPoints);
-  $(`#${blueSide}FinalAmpPoints`).text(data.BlueScoreSummary.AmpPoints);
+  $(`#${blueSide}FinalAlgaePoints`).text(data.BlueScoreSummary.AlgaePoints);
+  $(`#${blueSide}FinalCoralPoints`).text(data.BlueScoreSummary.GridPoints);
   $(`#${blueSide}FinalStagePoints`).text(data.BlueScoreSummary.StagePoints);
   $(`#${blueSide}FinalFoulPoints`).text(data.BlueScoreSummary.FoulPoints);
+  $(`#${blueSide}FinalAutoBonusRankingPoint`).html(
+    data.BlueScoreSummary.AutoRankingPoint ? "&#x2714;" : "&#x2718;"
+  );
+  $(`#${blueSide}FinalAutoBonusRankingPoint`).attr(
+    "data-checked", data.BlueScoreSummary.AutoRankingPoint
+  );
+  $(`#${blueSide}FinalCoralBonusRankingPoint`).html(
+    data.BlueScoreSummary.CoralRankingPoint ? "&#x2714;" : "&#x2718;"
+  );
+  $(`#${blueSide}FinalCoralBonusRankingPoint`).attr(
+    "data-checked", data.BlueScoreSummary.CoralRankingPoint
+  );
+  $(`#${blueSide}FinalBargeBonusRankingPoint`).html(
+    data.BlueScoreSummary.BargeRankingPoint ? "&#x2714;" : "&#x2718;"
+  );
+  $(`#${blueSide}FinalBargeBonusRankingPoint`).attr(
+    "data-checked", data.BlueScoreSummary.BargeRankingPoint
+  );
   $(`#${blueSide}FinalMelodyBonusRankingPoint`).html(
     data.BlueScoreSummary.MelodyBonusRankingPoint ? "&#x2714;" : "&#x2718;"
   );

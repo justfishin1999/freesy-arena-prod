@@ -26,6 +26,10 @@ type ScoreSummary struct {
 
 	AlgaePoints int
 	EndgamePoints int
+	CoralRankingPoint bool
+	AutoRankingPoint bool
+	BargeRankingPoint bool
+
 
 	// Fields only needed for TBA.
 	ParkPoints      int

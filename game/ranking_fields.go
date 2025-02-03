@@ -44,7 +44,7 @@ func (fields *RankingFields) AddScoreSummary(ownScore *ScoreSummary, opponentSco
 
 	// Assign ranking points and wins/losses/ties.
 	if ownScore.Score > opponentScore.Score {
-		fields.RankingPoints += 2
+		fields.RankingPoints += 3
 		fields.Wins += 1
 	} else if ownScore.Score == opponentScore.Score {
 		fields.RankingPoints += 1
