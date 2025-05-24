@@ -70,7 +70,6 @@
                 <label class="col-lg-6 control-label">Number of Alliances</label>
                 <div class="col-lg-6">
                   <input type="text" class="form-control" name="numPlayoffAlliances" value="{{.NumPlayoffAlliances}}"
-                      >
                 </div>
               </div>
               <div class="row mb-3">
@@ -309,6 +308,7 @@
                 <label class="col-lg-6 control-label">Blue Alliance IO Address</label>
                 <div class="col-lg-6">
                   <input type="text" class="form-control" name="BlueAllianceStationEstopAddress" value="{{.BlueAllianceStationEstopAddress}}">
+
                 </div>
               </div>
             </fieldset>
@@ -377,7 +377,6 @@
             </fieldset>
           </div>
           <!--automation-->
-          
           <!--game-specific-->
           <div class="tab-pane fade" id="game-specific" role="tabpanel" aria-labelledby="game-specific-tab">
             <fieldset class="mb-4">
@@ -584,7 +583,6 @@
 <script>
   updateNumPlayoffAlliances = function(isDoubleElimination) {
     const numPlayoffAlliances = $("input[name=numPlayoffAlliances]");
- 
   };
 </script>
 {{end}}
