@@ -92,7 +92,7 @@ type Arena struct {
 	soundsPlayed                      map[*game.MatchSound]struct{}
 	breakDescription                  string
 	preloadedTeams                    *[6]*model.Team
-	lastPlcNotifyTime 				  time.Time
+	lastPlcNotifyTime                 time.Time
 	Esp32                             plc.Esp32
 }
 
@@ -185,7 +185,13 @@ func (arena *Arena) LoadSettings() error {
 		settings.NetworkSecurityEnabled,
 		accessPointWifiStatuses,
 	)
-	arena.networkSwitch = network.NewSwitch(settings.SwitchAddress, settings.SwitchPassword)
+	if arena.EventSettings.SwitchVendor == "Cisco ISR" {
+		arena.networkSwitch = network.NewCiscoISR(settings.SwitchAddress, settings.SwitchPassword)
+	} else if arena.EventSettings.SwitchVendor == "Aruba" {
+		arena.networkSwitch = network.NewArubaSwitch(settings.SwitchAddress, settings.SwitchPassword)
+	} else {
+		arena.networkSwitch = network.NewCiscoSwitch(settings.SwitchAddress, settings.SwitchPassword)
+	}
 	arena.Plc.SetAddress(settings.PlcAddress)
 	arena.Esp32.SetScoreTableAddress(settings.ScoreTableEstopAddress)
 	arena.Esp32.SetRedAllianceStationEstopAddress(settings.RedAllianceStationEstopAddress)
@@ -847,8 +853,18 @@ func (arena *Arena) setupNetwork(teams [6]*model.Team, isPreload bool) {
 			log.Printf("Failed to configure team WiFi: %s", err.Error())
 		}
 		go func() {
-			if err := arena.networkSwitch.ConfigureTeamEthernet(teams); err != nil {
-				log.Printf("Failed to configure team Ethernet: %s", err.Error())
+			if arena.EventSettings.SwitchVendor == "Cisco ISR" {
+				if err := arena.networkSwitch.ConfigureCiscoISRTeams(teams); err != nil {
+					log.Printf("Failed to configure team Ethernet: %s", err.Error())
+				}
+			} else if arena.EventSettings.SwitchVendor == "Aruba" {
+				if err := arena.networkSwitch.ConfigureArubaTeams(teams); err != nil {
+					log.Printf("Failed to configure team Ethernet: %s", err.Error())
+				}
+			} else {
+				if err := arena.networkSwitch.ConfigureCiscoTeams(teams); err != nil {
+					log.Printf("Failed to configure team Ethernet: %s", err.Error())
+				}
 			}
 		}()
 	}
@@ -943,13 +959,13 @@ func (arena *Arena) handlePlcInputOutput() {
 	arena.handleTeamStop("B1", blueEStops[0], blueAStops[0])
 	arena.handleTeamStop("B2", blueEStops[1], blueAStops[1])
 	arena.handleTeamStop("B3", blueEStops[2], blueAStops[2])
-	
+
 	// Only notify every 500ms
-    if arena.lastPlcNotifyTime.IsZero() || time.Since(arena.lastPlcNotifyTime) >= 500*time.Millisecond {
-        //arena.PlcCoilsNotifier.Notify()
-        //arena.Plc.IoChangeNotifier().Notify()
-        arena.lastPlcNotifyTime = time.Now()
-    }
+	if arena.lastPlcNotifyTime.IsZero() || time.Since(arena.lastPlcNotifyTime) >= 500*time.Millisecond {
+		//arena.PlcCoilsNotifier.Notify()
+		//arena.Plc.IoChangeNotifier().Notify()
+		arena.lastPlcNotifyTime = time.Now()
+	}
 
 	// If the PLC is not enabled, or alternate I/O is not enabled, do not process any further PLC inputs.
 	if !arena.Plc.IsEnabled() && !arena.EventSettings.AlternateIOEnabled { // && not alternateIO Enabled

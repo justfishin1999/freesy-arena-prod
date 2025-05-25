@@ -63,5 +63,6 @@ func (web *Web) allianceStationDisplayWebsocketHandler(w http.ResponseWriter, r 
 		web.arena.RealtimeScoreNotifier,
 		web.arena.ReloadDisplaysNotifier,
 		web.arena.PlaySoundNotifier,
+		web.arena.StationTripNotifier,
 	)
 }
