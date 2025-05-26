@@ -184,7 +184,15 @@ func (arena *Arena) LoadSettings() error {
 		settings.NetworkSecurityEnabled,
 		accessPointWifiStatuses,
 	)
-	arena.networkSwitch = network.NewSwitch(settings.SwitchAddress, settings.SwitchPassword)
+	switch settings.SwitchVendor {
+	case "Aruba":
+		arena.networkSwitch = network.NewArubaSwitch(settings.SwitchAddress, settings.SwitchPassword)
+	case "Cisco ISR":
+		arena.networkSwitch = network.NewCiscoISR(settings.SwitchAddress, settings.SwitchPassword)
+	default:
+		// Cisco is the default
+		arena.networkSwitch = network.NewCiscoSwitch(settings.SwitchAddress, settings.SwitchPassword)
+	}
 	arena.Plc.SetAddress(settings.PlcAddress)
 	arena.Esp32.SetScoreTableAddress(settings.ScoreTableEstopAddress)
 	arena.Esp32.SetRedAllianceStationEstopAddress(settings.RedAllianceStationEstopAddress)
@@ -675,9 +683,6 @@ func (arena *Arena) Update() {
 
 	arena.LastMatchTimeSec = matchTimeSec
 	arena.lastMatchState = arena.MatchState
-
-	// Handle notifying DS about A/E stop trip
-	arena.NotifyStationTripStatus()
 }
 
 // Loops indefinitely to track and update the arena components.
