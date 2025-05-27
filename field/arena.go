@@ -190,14 +190,14 @@ func (arena *Arena) LoadSettings() error {
 		arena.networkSwitch = network.NewCiscoISR(settings.SwitchAddress, settings.SwitchPassword)
 	case "Aruba":
 		arena.networkSwitch = network.NewArubaSwitch(settings.SwitchAddress, settings.SwitchPassword)
-	case "TP-Link":
+	case "TP-Link TL-SG3210 V3":
 		// Placeholder for future use
-		panic("TP-Link is not yet supported!")
-	case "Unifi":
+		panic("TP-Link TL-SG3210 V3 is not yet supported!")
+	case "HP":
 		// Placeholder for future use
-		panic("Unifi is not yet supported!")
+		panic("HP is not yet supported!")
 	default:
-		arena.networkSwitch = network.NewCiscoSwitch(settings.SwitchAddress, settings.SwitchPassword)
+		arena.networkSwitch = network.NewCisco3000Switch(settings.SwitchAddress, settings.SwitchPassword)
 	}
 	arena.Plc.SetAddress(settings.PlcAddress)
 	arena.Esp32.SetScoreTableAddress(settings.ScoreTableEstopAddress)
@@ -869,14 +869,14 @@ func (arena *Arena) setupNetwork(teams [6]*model.Team, isPreload bool) {
 				if err := arena.networkSwitch.ConfigureArubaTeams(teams); err != nil {
 					log.Printf("Failed to configure team Ethernet: %s", err.Error())
 				}
-			case "TP-Link":
+			case "TP-Link TL-SG3210 V3":
 				// Placeholder for future use
-				panic("TP-Link is not yet supported!")
-			case "Unifi":
+				panic("TP-Link TL-SG3210 V3 is not yet supported!")
+			case "HP":
 				// Placeholder for future use
-				panic("Unifi is not yet supported!")
+				panic("HP is not yet supported!")
 			default:
-				if err := arena.networkSwitch.ConfigureCiscoTeams(teams); err != nil {
+				if err := arena.networkSwitch.ConfigureCisco3000Teams(teams); err != nil {
 					log.Printf("Failed to configure team Ethernet: %s", err.Error())
 				}
 			}

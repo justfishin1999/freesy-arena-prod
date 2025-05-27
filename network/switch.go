@@ -41,7 +41,7 @@ type Switch struct {
 	Status                string
 }
 
-func NewCiscoSwitch(address, password string) *Switch {
+func NewCisco3000Switch(address, password string) *Switch {
 	return &Switch{
 		vendor:                "Cisco",
 		address:               address,
@@ -77,7 +77,7 @@ func NewCiscoISR(address, password string) *Switch {
 	}
 }
 
-func (sw *Switch) ConfigureCiscoTeams(teams [6]*model.Team) error {
+func (sw *Switch) ConfigureCisco3000Teams(teams [6]*model.Team) error {
 	// Make sure multiple configurations aren't being set at the same time.
 	sw.mutex.Lock()
 	defer sw.mutex.Unlock()

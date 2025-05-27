@@ -249,8 +249,7 @@ UI for configuring event settings.
           <div class="tab-pane" id="field" role="tabpanel">
             <fieldset class="mb-4">
               <legend>Networking</legend>
-              <p>Enable this setting if you have a Vivid-Hosting VH-113 access point and Cisco Catalyst 3500-series
-                switch
+              <p>Enable this setting if you have a Vivid-Hosting VH-113 access point and a Cisco, Aruba, or HP Layer 3 managed switch
                 available, for isolating each team to its own SSID and VLAN.</p>
               <div class="row mb-3">
                 <label class="col-lg-8 control-label"
@@ -289,10 +288,11 @@ UI for configuring event settings.
                 <label class="col-lg-6 control-label">Switch Vendor</label>
                 <div class="col-lg-6">
                   <select class="form-select" name="switchVendor" id="switchVendor" value="{{.SwitchVendor}}">
-                    <option value="Cisco" {{ if eq .EventSettings.SwitchVendor "Cisco" }}selected{{ end }}>Cisco</option>
+                    <option value="Cisco3000" {{ if eq .EventSettings.SwitchVendor "Cisco" }}selected{{ end }}>Cisco 3000 Series Switch</option>
                     <option value="Aruba" {{ if eq .EventSettings.SwitchVendor "Aruba" }}selected{{ end }}>Aruba</option>
-                    <!--<option value="TP-Link" {{if eq .EventSettings.SwitchVendor "TP-Link" }}selected{{ end }}>TP-Link</option>-->
-                    <option value="Cisco ISR" {{if eq .EventSettings.SwitchVendor "Cisco ISR" }}selected{{ end }}>Cisco ISR</option>
+                    <option value="TP-Link TL-SG3210 V3" {{if eq .EventSettings.SwitchVendor "TP-Link" }}selected{{ end }}>TP-Link TL-SG3210 V3 (Future)</option>
+                    <option value="HP" {{if eq .EventSettings.SwitchVendor "HP" }}selected{{ end }}>HP (Future)</option>
+                    <option value="Cisco ISR" {{if eq .EventSettings.SwitchVendor "Cisco ISR" }}selected{{ end }}>Cisco 1921 ISR</option>
                   </select>
                 </div>
               </div>

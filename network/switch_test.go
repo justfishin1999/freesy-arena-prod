@@ -15,7 +15,7 @@ import (
 )
 
 func TestConfigureSwitch(t *testing.T) {
-	sw := NewCiscoSwitch("127.0.0.1", "password")
+	sw := NewCisco3000Switch("127.0.0.1", "password")
 	assert.Equal(t, "UNKNOWN", sw.Status)
 	sw.port = 9050
 	sw.configBackoffDuration = time.Millisecond
@@ -103,7 +103,7 @@ func TestConfigureSwitch(t *testing.T) {
 
 	// Should remove all previous VLANs and do nothing else if current configuration is blank.
 	mockTelnet(t, sw.port, &command1, &command2)
-	assert.Nil(t, sw.ConfigureCiscoTeams([6]*model.Team{nil, nil, nil, nil, nil, nil}))
+	assert.Nil(t, sw.ConfigureCisco3000Teams([6]*model.Team{nil, nil, nil, nil, nil, nil}))
 	assert.Equal(t, expectedResetCommand, command1)
 	assert.Equal(t, "", command2)
 	assert.Equal(t, "ACTIVE", sw.Status)
@@ -111,7 +111,7 @@ func TestConfigureSwitch(t *testing.T) {
 	// Should configure one team if only one is present.
 	sw.port += 1
 	mockTelnet(t, sw.port, &command1, &command2)
-	assert.Nil(t, sw.ConfigureCiscoTeams([6]*model.Team{nil, nil, nil, nil, {Id: 254}, nil}))
+	assert.Nil(t, sw.ConfigureCisco3000Teams([6]*model.Team{nil, nil, nil, nil, {Id: 254}, nil}))
 	assert.Equal(t, expectedResetCommand, command1)
 	assert.Equal(t, expectedOneTeam, command2)
 
@@ -120,7 +120,7 @@ func TestConfigureSwitch(t *testing.T) {
 	mockTelnet(t, sw.port, &command1, &command2)
 	assert.Nil(
 		t,
-		sw.ConfigureCiscoTeams([6]*model.Team{{Id: 1114}, {Id: 254}, {Id: 296}, {Id: 1503}, {Id: 1678}, {Id: 1538}}),
+		sw.ConfigureCisco3000Teams([6]*model.Team{{Id: 1114}, {Id: 254}, {Id: 296}, {Id: 1503}, {Id: 1678}, {Id: 1538}}),
 	)
 	assert.Equal(t, expectedResetCommand, command1)
 	assert.Equal(t, expectedAllTeams, command2)
