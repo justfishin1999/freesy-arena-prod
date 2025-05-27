@@ -185,20 +185,7 @@ func (arena *Arena) LoadSettings() error {
 		settings.NetworkSecurityEnabled,
 		accessPointWifiStatuses,
 	)
-	switch arena.EventSettings.SwitchVendor {
-	case "Cisco ISR":
-		arena.networkSwitch = network.NewCiscoISR(settings.SwitchAddress, settings.SwitchPassword)
-	case "Aruba":
-		arena.networkSwitch = network.NewArubaSwitch(settings.SwitchAddress, settings.SwitchPassword)
-	case "TP-Link":
-		// Placeholder for future use
-		panic("TP-Link is not yet supported!")
-	case "Unifi":
-		// Placeholder for future use
-		panic("Unifi is not yet supported!")
-	default:
-		arena.networkSwitch = network.NewCiscoSwitch(settings.SwitchAddress, settings.SwitchPassword)
-	}
+	arena.networkSwitch = network.NewSwitch(settings.SwitchAddress, settings.SwitchPassword)
 	arena.Plc.SetAddress(settings.PlcAddress)
 	arena.Esp32.SetScoreTableAddress(settings.ScoreTableEstopAddress)
 	arena.Esp32.SetRedAllianceStationEstopAddress(settings.RedAllianceStationEstopAddress)
@@ -860,25 +847,8 @@ func (arena *Arena) setupNetwork(teams [6]*model.Team, isPreload bool) {
 			log.Printf("Failed to configure team WiFi: %s", err.Error())
 		}
 		go func() {
-			switch arena.EventSettings.SwitchVendor {
-			case "Cisco ISR":
-				if err := arena.networkSwitch.ConfigureCiscoISRTeams(teams); err != nil {
-					log.Printf("Failed to configure team Ethernet: %s", err.Error())
-				}
-			case "Aruba":
-				if err := arena.networkSwitch.ConfigureArubaTeams(teams); err != nil {
-					log.Printf("Failed to configure team Ethernet: %s", err.Error())
-				}
-			case "TP-Link":
-				// Placeholder for future use
-				panic("TP-Link is not yet supported!")
-			case "Unifi":
-				// Placeholder for future use
-				panic("Unifi is not yet supported!")
-			default:
-				if err := arena.networkSwitch.ConfigureCiscoTeams(teams); err != nil {
-					log.Printf("Failed to configure team Ethernet: %s", err.Error())
-				}
+			if err := arena.networkSwitch.ConfigureTeamEthernet(teams); err != nil {
+				log.Printf("Failed to configure team Ethernet: %s", err.Error())
 			}
 		}()
 	}
