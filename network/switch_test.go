@@ -143,7 +143,7 @@ func mockTelnet(t *testing.T, port int, command1 *string, command2 *string) {
 		*command1 = reader.String()
 		conn1.Close()
 
-		// Fake the second connection.
+		// Fake the second connection.z
 		conn2, err := ln.Accept()
 		assert.Nil(t, err)
 		conn2.SetReadDeadline(time.Now().Add(10 * time.Millisecond))
