@@ -185,11 +185,18 @@ func (arena *Arena) LoadSettings() error {
 		settings.NetworkSecurityEnabled,
 		accessPointWifiStatuses,
 	)
-	if arena.EventSettings.SwitchVendor == "Cisco ISR" {
+	switch arena.EventSettings.SwitchVendor {
+	case "Cisco ISR":
 		arena.networkSwitch = network.NewCiscoISR(settings.SwitchAddress, settings.SwitchPassword)
-	} else if arena.EventSettings.SwitchVendor == "Aruba" {
+	case "Aruba":
 		arena.networkSwitch = network.NewArubaSwitch(settings.SwitchAddress, settings.SwitchPassword)
-	} else {
+	case "TP-Link":
+		// Placeholder for future use
+		panic("TP-Link is not yet supported!")
+	case "Unifi":
+		// Placeholder for future use
+		panic("Unifi is not yet supported!")
+	default:
 		arena.networkSwitch = network.NewCiscoSwitch(settings.SwitchAddress, settings.SwitchPassword)
 	}
 	arena.Plc.SetAddress(settings.PlcAddress)
@@ -853,15 +860,22 @@ func (arena *Arena) setupNetwork(teams [6]*model.Team, isPreload bool) {
 			log.Printf("Failed to configure team WiFi: %s", err.Error())
 		}
 		go func() {
-			if arena.EventSettings.SwitchVendor == "Cisco ISR" {
+			switch arena.EventSettings.SwitchVendor {
+			case "Cisco ISR":
 				if err := arena.networkSwitch.ConfigureCiscoISRTeams(teams); err != nil {
 					log.Printf("Failed to configure team Ethernet: %s", err.Error())
 				}
-			} else if arena.EventSettings.SwitchVendor == "Aruba" {
+			case "Aruba":
 				if err := arena.networkSwitch.ConfigureArubaTeams(teams); err != nil {
 					log.Printf("Failed to configure team Ethernet: %s", err.Error())
 				}
-			} else {
+			case "TP-Link":
+				// Placeholder for future use
+				panic("TP-Link is not yet supported!")
+			case "Unifi":
+				// Placeholder for future use
+				panic("Unifi is not yet supported!")
+			default:
 				if err := arena.networkSwitch.ConfigureCiscoTeams(teams); err != nil {
 					log.Printf("Failed to configure team Ethernet: %s", err.Error())
 				}
