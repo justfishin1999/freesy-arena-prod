@@ -30,9 +30,7 @@ type ArenaNotifiers struct {
 	ReloadDisplaysNotifier             *websocket.Notifier
 	ScorePostedNotifier                *websocket.Notifier
 	ScoringStatusNotifier              *websocket.Notifier
-
-	//notify driver station displays about a/e stop trip
-	StationTripNotifier *websocket.Notifier
+	PlcCoilsNotifier                   *websocket.Notifier
 }
 
 type MatchTimeMessage struct {
@@ -68,9 +66,8 @@ func (arena *Arena) configureNotifiers() {
 	arena.ReloadDisplaysNotifier = websocket.NewNotifier("reload", nil)
 	arena.ScorePostedNotifier = websocket.NewNotifier("scorePosted", arena.GenerateScorePostedMessage)
 	arena.ScoringStatusNotifier = websocket.NewNotifier("scoringStatus", arena.generateScoringStatusMessage)
+	arena.PlcCoilsNotifier = websocket.NewNotifier("plcCoils", arena.generatePlcCoilsMessage)
 
-	//notify driver station displays about a/e stop trip
-	arena.StationTripNotifier = websocket.NewNotifier("stationTrip", nil)
 }
 
 func (arena *Arena) generateAllianceSelectionMessage() any {
@@ -222,6 +219,21 @@ func (arena *Arena) generateMatchTimeMessage() any {
 
 func (arena *Arena) generateMatchTimingMessage() any {
 	return &game.MatchTiming
+}
+
+func (arena *Arena) generatePlcCoilsMessage() any {
+	// Get the current state of all PLC coils.
+	coilsArray := arena.Plc.GetAllCoils()
+	coilsArrayNames := arena.Plc.GetCoilNames()
+
+	// Build a map pairing coil names with their values.
+	coilsMap := make(map[string]bool)
+	for i, name := range coilsArrayNames {
+		if i < len(coilsArray) {
+			coilsMap[name] = coilsArray[i]
+		}
+	}
+	return coilsMap
 }
 
 func (arena *Arena) generateRealtimeScoreMessage() any {
