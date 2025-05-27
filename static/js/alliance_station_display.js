@@ -102,13 +102,16 @@ var handleArenaStatus = function (data) {
     blinkInterval = null;
   }
 
+
   // Flash driver station display when A-Stopped or solid orange when E-Stopped
   // Make sure match is not in progress to prevent flashing during match
   $("#match").removeClass("solid-orange blink-orange");
-  if (stationStatus.EStop && !data.MatchInProgress) {
+  if (stationStatus.EStop && data.MatchState==0) {
     $("#match").addClass("solid-orange"); // E-stop: solid orange
-  } else if (stationStatus.AStop && !data.MatchInProgress) {
+    console.log("E-Stopped")
+  } else if (stationStatus.AStop && data.MatchState==0) {
     $("#match").addClass("blink-orange"); // A-stop: blinking orange
+    console.log("A-Stopped")
   }
 };
 
@@ -175,25 +178,6 @@ $(function () {
     },
     playSound: function(event) {
       handlePlaySound(event.data);
-    },
-    //handle notifier for station trip a/e stop
-    stationTrip: function(event) { 
-      handleStationTrip(event.data); 
     }
   });
 });
-
-var handleStationTrip = function(data) {
-  if (data.StationId !== station) return;
-
-  const match = $("#match");
-  match.removeClass("solid-orange blink-orange");
-
-  if (!data.MatchInProgress) {
-    if (data.EStopTripped) {
-      match.addClass("solid-orange");
-    } else if (data.AStopTripped) {
-      match.addClass("blink-orange");
-    }
-  }
-};
