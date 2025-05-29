@@ -1,0 +1,207 @@
+{{define "title"}}Help - Running The Event{{end}}
+
+{{define "body"}}
+<link rel="stylesheet" href="/static/css/running_the_event_help.css">
+
+<h1>Running an event</h1>
+<hr>
+<h2>Match Play</h2>
+<div class="help-container">
+  <div class="help-card">
+    <div class="card-header">
+      <span class="card-title">Match Setup</span>
+      <span class="pre-match-card">Pre-Match</span>
+    </div>
+    <div class="card-content">
+      <p>Before a match can be started, all robots and driver stations must show successfully connected (green) on the Match Play screen.
+        Once you are ready to start the match, you click the 'Start Match' button which will start moving robots. <b>Make sure that all gates are closed
+        and that all field personnel are clear of robots and moving objects.</b>
+      </p>
+    </div>
+  </div>
+  <div class="help-card">
+    <div class="card-header">
+      <span class="card-title">Active Match</span>
+      <span class="during-match-card">During Match</span>
+    </div>
+    <div class="card-content">
+      <p>Once the match has been started, it will run through 3 phases. Autonomous - Pause - Teleop. In Autonomous, robots are running pre-programmed routines. There is then a configured pause (usually 3 seconds).
+        Robots then enter teleop (driver control), where robots are operator controlled. Once the end of the configured duration for teleop is reached, the match is ended and all robots are disabled.
+        If something goes sideways, you can 'Abort' the match to stop the field at that time. This can be executed at any time during the match.
+      </p>
+    </div>
+  </div>
+  <div class="help-card">
+    <div class="card-header">
+      <span class="card-title">Post Match</span>
+      <span class="post-match-card">Post-Match</span>
+    </div>
+    <div class="card-content">
+      <p>Once the match has been completed, you will need to 'Commit' the scores. This should <b>only be completed once the head referee has given the OK.</b>
+        If additional time is needed to count scores, select the 'Count' button which will toggle the alliance station displays to indiciate that counting is underway.
+        Once ready, you will need to click the 'Show Final Scores' button, which will change the audience display to show the scores. Make sure the announcer is ready!
+      </p>
+    </div>
+  </div>
+  <div class="help-card">
+    <div class="card-header">
+      <span class="card-title">Editing Scores</span>
+      <span class="other-details-card">Other Situations</span>
+    </div>
+    <div class="card-content">
+      <p>In the event that scores need to be edited, you can select the "Edit Results" button which will give you the option to edit any score that has been entered.
+        Once done editing, press 'Save' at the bottom to finalize the edit. You will then commit the scores the same way as a normal match.
+      If you are outside of the match, you can go to Match Review, and select "Edit" on the respective match. Be sure to save!</p>
+    </div>
+  </div>
+</div>
+<br>
+<hr>
+<h2>Alliance Station Displays</h2>
+<div class="help-container">
+  <div class="help-card">
+    <div class="card-header">
+      <span class="card-title">Alliance Station Displays</span>
+      <span class="pre-match-card">Pre-Match</span>
+    </div>
+    <div class="card-content">
+      <p>Alliance Station Displays will show a team's number and a team's name/nickname.
+        It will be either red or blue based on the team's respective alliance. If a team is disabled, it will show 'DISABLED' under their team number.
+      </p>
+    </div>
+  </div>
+  <div class="help-card">
+    <div class="card-header">
+      <span class="card-title">Alliance Station Displays</span>
+      <span class="during-match-card">During Match</span>
+    </div>
+    <div class="card-content">
+      <p>Alliance station displays will change to show the red alliance score, blue alliance score, and the remaining match time.
+        The middle display will show the time.
+      </p>
+    </div>
+  </div>
+  <div class="help-card">
+    <div class="card-header">
+      <span class="card-title">Alliance Station Displays</span>
+      <span class="post-match-card">Post-Match</span>
+    </div>
+    <div class="card-content">
+      <p>Alliance station displays will show the team number until the head-ref signals for 'Count' or 'Field Reset'.
+        At this point, the driver station may flash amber or be solid amber to indiciate an A or E stop trip.
+      </p>
+    </div>
+  </div>
+  <div class="help-card">
+    <div class="card-header">
+      <span class="card-title">Alliance Station Displays</span>
+      <span class="other-details-card">Continuous</span>
+    </div>
+    <div class="card-content">
+      <p>Alliance station displays will also play game sounds.
+      </p>
+    </div>
+  </div>
+</div>
+<br>
+<hr>
+<h2>Audience Displays</h2>
+<div class="help-container">
+  <div class="help-card">
+    <div class="card-header">
+      <span class="card-title">Audience Displays</span>
+      <span class="pre-match-card">Pre-Match</span>
+    </div>
+    <div class="card-content">
+      <p>Audience displays will show the 'Match Intro' display. This shows the teams that are on the field, their avatar (if available), the match type and number, and the event name.</p>
+    </div>
+  </div>
+  <div class="help-card">
+    <div class="card-header">
+      <span class="card-title">Audience Displays</span>
+      <span class="during-match-card">During Match</span>
+    </div>
+    <div class="card-content">
+      <p>Audience displays will show the 'Match Play' display.
+        This shows the teams that are on the field, their avatar (if available), the match type and number, event name, each alliance's scores, and the game time remaining.
+      </p>
+    </div>
+  </div>
+  <div class="help-card">
+    <div class="card-header">
+      <span class="card-title">Audience Displays</span>
+      <span class="post-match-card">Post-Match</span>
+    </div>
+    <div class="card-content">
+      <p>The audience display will show the 'Blank' display once the match completes. Once the scores have been committed, and 'Show final score' has been selected,
+        the audience display will then change to the 'Final Score' display. This will show the outcome of the match, in addition to the score breakdown and rankings of 
+        teams that are in the match.
+      </p>
+    </div>
+  </div>
+  <div class="help-card">
+    <div class="card-header">
+      <span class="card-title">Audience Displays</span>
+      <span class="other-details-card">Other Functions</span>
+    </div>
+    <div class="card-content">
+      <p>Audience Displays will always play game sounds. 
+        You can also choose to show the playoff bracket, alliance selection display, game logo, or sponsor reel (if configured).
+      </p>
+    </div>
+  </div>
+</div>
+<br>
+<hr>
+<h2>Alliance Station E-Stop/A-Stop</h2>
+<div class="help-container">
+  <div class="help-card">
+    <div class="card-header">
+      <span class="card-title">E-Stop/A-Stop</span>
+      <span class="pre-match-card">Pre-Match</span>
+    </div>
+    <div class="card-content">
+      <p>From the A-Stop/E-Stop panel, teams can be A-Stopped or E-Stopped. If a team is A-Stopped prior to a match, they will be able to resume at teleop/driver control.
+        A team cannot be E-Stopped prior to a match, or the match will not be able to be started.
+      </p>
+    </div>
+  </div>
+  <div class="help-card">
+    <div class="card-header">
+      <span class="card-title">E-Stop/A-Stop</span>
+      <span class="during-match-card">During Match</span>
+    </div>
+    <div class="card-content">
+      <p>If a team A-Stops during autonomous, the robot is disabled for the remainder of the Autonomous period. The A-Stop cannot be used outside of autonomous.
+        If a team E-Stops at any time during the match, the robot is disabled for the remainder of the match and cannot be re-enabled.
+      </p>
+    </div>
+  </div>
+  <div class="help-card">
+    <div class="card-header">
+      <span class="card-title">E-Stop/A-Stop</span>
+      <span class="post-match-card">Post-Match</span>
+    </div>
+    <div class="card-content">
+      <p>Once the match has ended, all E-Stops and A-Stops will need to be physically reset. This is done by unlocking/releasing the button that has been pressed.
+        This can be identified by an amber flashing driver station display (A-Stop), or a solid amber driver station display (E-Stop).
+      </p>
+    </div>
+  </div>
+  <div class="help-card">
+    <div class="card-header">
+      <span class="card-title">E-Stop/A-Stop</span>
+      <span class="other-details-card">Other Functions</span>
+    </div>
+    <div class="card-content">
+      <p>Optionally, all teams can be A-Stopped or E-Stopped from an FMS panel (Panels > E-Stops/A-Stops > Red or Blue).
+        This can be used if an event does not have the physical hardware available to provide A-Stops or E-Stops in a driver station.
+      </p>
+    </div>
+  </div>
+</div>
+{{end}}
+
+{{define "script"}}
+<!-- No additional scripts needed -->
+{{end}}

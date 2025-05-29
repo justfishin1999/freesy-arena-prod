@@ -239,6 +239,7 @@ func (web *Web) newHandler() http.Handler {
 	// Freezy Arena
 	mux.HandleFunc("GET /help/freezy/field_monitor_help", web.fieldMonitorDisplayHelpHandler)
 	mux.HandleFunc("GET /help/freezy/alliance_station_display_help", web.allianceStationDisplayHelpHandler)
+	mux.HandleFunc("GET /help/freezy/running_the_event_help", web.runningTheEventHelpHandler)
 	mux.HandleFunc("GET /api/freezy/allianceStatus", web.allianceStatusApiHandler)
 	mux.HandleFunc("POST /api/freezy/eStopState", web.eStopStatePostHandler)
 	mux.HandleFunc("GET /panel/freezy/eStopControl/{alliance}", web.estopContolDisplayHandler)
