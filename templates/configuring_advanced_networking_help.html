@@ -1,7 +1,7 @@
 <!--Author: justfishin@icloud.com-->
 <!--General help guide for Freezy Arena-->
 
-{{define "title"}}Help - Running The Event{{end}}
+{{define "title"}}Help - Configuring Advanced Networking{{end}}
 
 {{define "body"}}
 <link rel="stylesheet" href="/static/css/running_the_event_help.css">
@@ -158,8 +158,9 @@
       <span class="other-details-card">VividHosting Radio Kiosk</span>
     </div>
     <div class="card-content">
-      <p>Open a web browser and navigate to http://localhost/admin. Enter the password (if required) <code>supercoolpassword</code>. Here, you can see teams that have been programmed and enable various options.
-       Navigate to http://localhost/upload. Upload the exported CSV file from the FMS (Report > CSV Data Export > WPA Keys). The kiosk is now ready for use.</p>
+      <p>On the FMS, Open a web browser and navigate to Setup > Team List. Scroll down and click the <a href="/setup/teams/generate_wpa_keys?all=true">Generate All WPA Keys</a> button. Then navigate to Report > CSV Data Export > WPA Keys and save the file on a USB drive.
+        <br><br>On the radio kiosk, open a web browser and go to http://localhost/admin. Enter the password (if required) <code>supercoolpassword</code>. Here, you can see teams that have been programmed and enable various options.
+       Navigate to http://localhost/upload. Upload the exported CSV file from the FMS. The kiosk is now ready for use.</p>
     </div>
   </div>
 </div>
