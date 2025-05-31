@@ -234,6 +234,7 @@ func (arena *Arena) LoadSettings() error {
 		arena.NetworkScannerManager.SetEnabled(
 			true,
 			arena.EventSettings.NetworkScannerSubnet,
+			arena.EventSettings.NetworkScannerInterval,
 		)
 	}
 

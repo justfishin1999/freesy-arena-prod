@@ -3,7 +3,6 @@
 package network
 
 import (
-	"fmt"
 	"log"
 	"net"
 	"os"
@@ -36,57 +35,64 @@ type Manager struct {
 
 var managerInstance *Manager = &Manager{}
 
+// GetManager returns the singleton Manager.
 func GetManager() *Manager {
 	return managerInstance
 }
 
-// SetEnabled toggles the scanner on/off and, if enabling, passes the subnet string.
-// If `enabled==true` and no scanner is running, it will attempt to parse the CIDR (adding "/24" if needed).
-func (m *Manager) SetEnabled(enabled bool, subnet string) {
+// SetEnabled toggles the scanner on/off. If enabling, it passes both the subnet string
+// and the desired scan interval (in seconds). If no scanner is running yet, it will attempt
+// to parse the CIDR (appending "/24" if needed) and start the background loop.
+func (m *Manager) SetEnabled(enabled bool, subnet string, configuredInterval int) {
 	m.Enabled = enabled
 	if enabled && m.scanner == nil {
-		m.start(subnet)
+		m.start(subnet, configuredInterval)
 	}
-	// (Note: We are not explicitly stopping the existing goroutine here if enabled==false.
-	//  If you need to fully cancel/stop the background loop, you’d add a cancel channel here.)
+	// NOTE: We do not cancel the existing scan goroutine if enabled==false. To fully stop it,
+	// you would need a context or a stop channel—this example leaves it running (but it will
+	// simply not be used if Enabled==false).
 }
 
-// start parses the given CIDR (adding "/24" if missing), then spins up the background ping loop.
-func (m *Manager) start(cidr string) {
-	if strings.TrimSpace(cidr) == "" {
-		fmt.Printf("Network scanner not started: no subnet configured.")
+// start parses the given CIDR (adding "/24" if missing), creates a new scanner with the given interval,
+// and spins up the background ping loop.
+func (m *Manager) start(cidr string, configuredInterval int) {
+	cidr = strings.TrimSpace(cidr)
+	if cidr == "" {
+		log.Printf("Network scanner not started: no subnet configured.\n")
 		return
 	}
 
-	// If the user omitted the mask (e.g. "10.0.100.0"), default to /24
+	// If the user omitted a mask (e.g. "10.0.100.0"), default to /24
 	if !strings.Contains(cidr, "/") {
 		cidr = cidr + "/24"
 	}
 
 	_, ipnet, err := net.ParseCIDR(cidr)
 	if err != nil {
-		fmt.Printf("Network scanner not started: invalid CIDR \"%s\": %v", cidr, err)
+		log.Printf("Network scanner not started: invalid CIDR \"%s\": %v\n", cidr, err)
 		return
 	}
 
+	// Build a new scanner with the parsed subnet and the interval provided (in seconds).
 	sc := &scanner{
 		Subnet:       ipnet,
-		Interval:     30 * time.Second,
+		Interval:     time.Duration(configuredInterval) * time.Second,
 		Devices:      make(map[string]Device),
 		KnownDevices: map[string]bool{"10.0.100.5": true, "10.0.100.3": true, "10.0.100.2": true},
 	}
 	m.scanner = sc
 
+	// Launch the background goroutine that continuously scans.
 	go func() {
 		for {
 			sc.scan()
 			time.Sleep(sc.Interval)
 		}
 	}()
-	fmt.Printf("Network scanner started on subnet %s", cidr)
+	log.Printf("Network scanner started on subnet %s (interval %ds)\n", cidr, configuredInterval)
 }
 
-// GetDevices returns the last‐seen devices. Returns nil if the scanner has never started.
+// GetDevices returns the slice of last‐seen devices. If no scan has ever started, returns nil.
 func (m *Manager) GetDevices() []Device {
 	if m.scanner == nil {
 		return nil
@@ -101,7 +107,8 @@ func (m *Manager) GetDevices() []Device {
 	return list
 }
 
-// scan performs an ICMP ping sweep of the configured subnet.
+// scan performs an ICMP ping sweep of every IP in the configured subnet.
+// If an IP is reachable, it records it (updating LastSeen and Rogue).
 func (s *scanner) scan() {
 	for ip := s.Subnet.IP.Mask(s.Subnet.Mask); s.Subnet.Contains(ip); incrementIP(ip) {
 		addr := ip.String()
@@ -115,7 +122,7 @@ func (s *scanner) scan() {
 	}
 }
 
-// incrementIP iterates to the next IP in the subnet.
+// incrementIP moves the given IP to the next address in network order.
 func incrementIP(ip net.IP) {
 	for j := len(ip) - 1; j >= 0; j-- {
 		ip[j]++
@@ -125,7 +132,7 @@ func incrementIP(ip net.IP) {
 	}
 }
 
-// ping sends a single ICMP Echo Request to the given IP, timing out after 500ms.
+// ping sends a single ICMP Echo Request to the given IP, waiting up to 500ms for a reply.
 func ping(ip string) (bool, error) {
 	c, err := icmp.ListenPacket("ip4:icmp", "0.0.0.0")
 	if err != nil {
@@ -153,8 +160,7 @@ func ping(ip string) (bool, error) {
 	}
 
 	start := time.Now()
-	_, err = c.WriteTo(msgBytes, dst)
-	if err != nil {
+	if _, err = c.WriteTo(msgBytes, dst); err != nil {
 		return false, err
 	}
 
@@ -175,13 +181,14 @@ func ping(ip string) (bool, error) {
 	}
 
 	if parsedMsg.Type == ipv4.ICMPTypeEchoReply {
-		log.Printf("Reply from %s in %v", peer.String(), time.Since(start))
+		log.Printf("Network Scanner: Reply from %s in %v", peer.String(), time.Since(start))
 		return true, nil
 	}
 	return false, nil
 }
 
-// Any existing entry in s.Devices[ip].Rogue will be set to false.
+// MarkAsKnown flags the given IP address as a known device. Any existing entry in s.Devices[ip].Rogue
+// will be set to false, and future scans will not mark it as rogue.
 func (m *Manager) MarkAsKnown(ip string) {
 	if m.scanner == nil {
 		return
@@ -192,7 +199,7 @@ func (m *Manager) MarkAsKnown(ip string) {
 	// Add to known devices so future scans won't mark it as rogue
 	m.scanner.KnownDevices[ip] = true
 
-	// If it's already in Devices map, update its Rogue field
+	// If it’s already in Devices map, update its Rogue field immediately
 	if d, ok := m.scanner.Devices[ip]; ok {
 		d.Rogue = false
 		m.scanner.Devices[ip] = d

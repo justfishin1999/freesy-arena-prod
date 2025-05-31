@@ -5,6 +5,7 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
+	"log"
 	"net"
 	"strings"
 	"sync"
@@ -227,7 +228,7 @@ func (sw *Switch) ConfigureArubaTeams(teams [6]*model.Team) error {
 
 func (sw *Switch) ConfigureCiscoISRTeams(teams [6]*model.Team) error {
 	// Make sure multiple configurations aren't being set at the same time.
-	fmt.Printf("Configuring cisco ISR")
+	log.Printf("Configuring cisco ISR")
 	sw.mutex.Lock()
 	defer sw.mutex.Unlock()
 	sw.Status = "CONFIGURING"
@@ -315,11 +316,9 @@ func (sw *Switch) runCommandCiscoISR(command string) (string, error) {
 	reader := bufio.NewReader(conn)
 
 	// Read initial prompt (e.g., "Password:")
-	prompt, err := reader.ReadString('\n')
 	if err != nil {
 		return "", fmt.Errorf("failed to read prompt: %v", err)
 	}
-	fmt.Printf("Received prompt: %s\n", prompt)
 
 	// Send password and subsequent commands
 	commands := []string{

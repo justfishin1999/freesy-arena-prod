@@ -124,6 +124,7 @@ func (web *Web) settingsPostHandler(w http.ResponseWriter, r *http.Request) {
 	eventSettings.BlueAllianceStationEstopAddress = r.PostFormValue("BlueAllianceStationEstopAddress")
 	eventSettings.NetworkScannerEnabled = r.PostFormValue("networkScannerEnabled") == "on"
 	eventSettings.NetworkScannerSubnet = r.PostFormValue("networkScannerSubnet")
+	eventSettings.NetworkScannerInterval, _ = strconv.Atoi(r.PostFormValue("networkScannerInterval"))
 
 	err := web.arena.Database.UpdateEventSettings(eventSettings)
 	if err != nil {

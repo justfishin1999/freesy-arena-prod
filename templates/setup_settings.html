@@ -249,7 +249,7 @@ UI for configuring event settings.
           <div class="tab-pane" id="field" role="tabpanel">
             <fieldset class="mb-4">
               <legend>Networking</legend>
-              <p>Enable this setting if you have a Vivid-Hosting VH-113 access point and a Cisco, Aruba, or HP Layer 3 managed switch
+              <p>Enable this setting if you have a Vivid-Hosting VH-113 access point and a Layer 3 managed switch (Cisco, Aruba, HP) or a Cisco 1921 ISR
                 available, for isolating each team to its own SSID and VLAN.</p>
               <div class="row mb-3">
                 <label class="col-lg-8 control-label"
@@ -347,6 +347,9 @@ UI for configuring event settings.
                   <input type="text" class="form-control" name="BlueAllianceStationEstopAddress" value="{{.BlueAllianceStationEstopAddress}}">
                 </div>
               </div>
+              </fieldset>
+              <fieldset class="mb-4">
+              <legend>Network Scanner</legend>
               <div class="row mb-3">
                 <label class="col-lg-8 control-label"
                   for="networkSecurityEnabled">Enable network scans</label>
@@ -358,7 +361,37 @@ UI for configuring event settings.
               <div class="row mb-3">
                 <label class="col-lg-6 control-label">Network Scanner Subnet</label>
                 <div class="col-lg-6">
-                  <input type="text" class="form-control" name="networkScannerSubnet" value="{{.NetworkScannerSubnet}}">
+                  <select class="form-select" name="networkScannerSubnet" id="networkScannerSubnet" value="{{.NetworkScannerSubnet}}">
+                    <option value="10.0.100.0/24" {{ if eq .EventSettings.NetworkScannerSubnet "10.0.100.0/24" }}selected{{ end }}>10.0.100.0/24</option>
+                    <option value="172.16.100.0/24" {{ if eq .EventSettings.NetworkScannerSubnet "172.16.100.0/24" }}selected{{ end }}>172.16.100.0/24</option>
+                    <option value="10.0.0.0/24" {{if eq .EventSettings.NetworkScannerSubnet "10.0.0.0/24" }}selected{{ end }}>10.0.0.0/24</option>
+                    <option value="10.0.0.0/8" {{if eq .EventSettings.NetworkScannerSubnet "10.0.0.0/8" }}selected{{ end }}>10.0.0.0/8 (INCLUDES TEAM NETWORKS)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-lg-6 control-label">Network Scanner Interval</label>
+                <div class="col-lg-6">
+                  <select class="form-select" name="networkScannerInterval" id="networkScannerInterval">
+                    <option value="30"  {{ if eq .EventSettings.NetworkScannerInterval 30  }}selected{{ end }}>
+                      30 Seconds (0.5 Minutes)
+                    </option>
+                    <option value="60"  {{ if eq .EventSettings.NetworkScannerInterval 60  }}selected{{ end }}>
+                      60 Seconds (1 Minute)
+                    </option>
+                    <option value="120" {{ if eq .EventSettings.NetworkScannerInterval 120 }}selected{{ end }}>
+                      120 Seconds (2 Minutes)
+                    </option>
+                    <option value="240" {{ if eq .EventSettings.NetworkScannerInterval 240 }}selected{{ end }}>
+                      240 Seconds (4 Minutes)
+                    </option>
+                    <option value="480" {{ if eq .EventSettings.NetworkScannerInterval 480 }}selected{{ end }}>
+                      480 Seconds (8 Minutes)
+                    </option>
+                    <option value="960" {{ if eq .EventSettings.NetworkScannerInterval 960 }}selected{{ end }}>
+                      960 Seconds (16 Minutes)
+                    </option>
+                  </select>
                 </div>
               </div>
             </fieldset>

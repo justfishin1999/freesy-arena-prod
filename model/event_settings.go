@@ -61,6 +61,7 @@ type EventSettings struct {
 	BargeBonusPointThreshold        int
 	NetworkScannerEnabled           bool
 	NetworkScannerSubnet            string
+	NetworkScannerInterval          int
 }
 
 func (database *Database) GetEventSettings() (*EventSettings, error) {
