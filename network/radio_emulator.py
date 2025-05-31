@@ -81,7 +81,7 @@ WEB_PAGE = """
                 
                 const tableBody = document.getElementById('config-table-body');
                 tableBody.innerHTML = '';
-                for (const [station, config] of Object.entries(data.stations)) {
+                for (const [station, config] of Object.entries(data.stationStatuses)) {
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td class="border p-2">${station}</td>
@@ -159,6 +159,7 @@ class FRCFieldRadioEmulator(http.server.BaseHTTPRequestHandler):
                     "status": radio_state["status"],
                     "channel": radio_state["channel"],
                     "stationStatuses": station_statuses,
+                    "stations": station_statuses,
                     "configured": radio_state["configured"],
                     "firmware_version": radio_state["firmware_version"],
                     "last_error": radio_state["last_error"],
