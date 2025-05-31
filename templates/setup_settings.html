@@ -347,6 +347,20 @@ UI for configuring event settings.
                   <input type="text" class="form-control" name="BlueAllianceStationEstopAddress" value="{{.BlueAllianceStationEstopAddress}}">
                 </div>
               </div>
+              <div class="row mb-3">
+                <label class="col-lg-8 control-label"
+                  for="networkSecurityEnabled">Enable network scans</label>
+                <div class="col-lg-1 checkbox">
+                  <input type="checkbox" id="networkScannerEnabled"
+                    name="networkScannerEnabled" {{if .NetworkScannerEnabled}} checked{{end}}>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-lg-6 control-label">Network Scanner Subnet</label>
+                <div class="col-lg-6">
+                  <input type="text" class="form-control" name="networkScannerSubnet" value="{{.NetworkScannerSubnet}}">
+                </div>
+              </div>
             </fieldset>
             <fieldset class="mb-4">
               <legend>Team Signs</legend>

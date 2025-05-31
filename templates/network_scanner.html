@@ -1,0 +1,150 @@
+{{/* templates/network_scanner.html */}}
+
+{{/* ───── Title Block ───── */}}
+{{define "title"}}Network Scanner{{end}}
+
+{{/* ───── Body Block ───── */}}
+{{define "body"}}
+  <div class="container mt-4">
+    <!-- Header with Running/Stopped badge -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h1 class="h3">Network Scanner</h1>
+      {{if .ScannerRunning}}
+        <span class="badge bg-success">Running</span>
+      {{else}}
+        <span class="badge bg-secondary">Stopped</span>
+      {{end}}
+    </div>
+
+    <!-- Configured Subnet Card -->
+    <div class="card mb-4 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title mb-1">Configured Subnet</h5>
+        <p class="card-text">{{.NetworkScannerSubnet}}</p>
+      </div>
+    </div>
+
+    {{if .ScannerRunning}}
+      <!-- Detected Devices Card -->
+      <div class="card shadow-sm mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Detected Devices</h5>
+          <small class="text-muted">Auto-refresh every 10s</small>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-striped table-hover mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th scope="col">IP Address</th>
+                  <th scope="col">Last Seen</th>
+                  <th scope="col">Unknown Device?</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody id="deviceTable">
+                <!-- JS will inject <tr> rows here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    {{else}}
+      <div class="alert alert-warning" role="alert">
+        The network scanner is currently stopped. <br>
+        To enable it, go to the main Settings page, check “Enable Network Scanner,”
+        provide a valid subnet (e.g. <code>10.0.100.0/24</code>), and restart the Arena.
+      </div>
+    {{end}}
+  </div>
+{{end}}
+
+{{/* ───── Script Block ───── */}}
+{{define "script"}}
+  {{if .ScannerRunning}}
+    <script>
+      // Fetch and populate the device table
+      async function loadDevices() {
+        try {
+          const resp = await fetch("/network/freezy/network_devices");
+          if (!resp.ok) {
+            throw new Error("Scanner disabled or unavailable");
+          }
+          const devices = await resp.json();
+          const tbody = document.getElementById("deviceTable");
+          tbody.innerHTML = ""; // Clear existing rows
+
+          devices.forEach(d => {
+            const tr = document.createElement("tr");
+
+            // IP address cell
+            const ipTd = document.createElement("td");
+            ipTd.textContent = d.ip;
+            tr.appendChild(ipTd);
+
+            // Last Seen cell
+            const lastSeenTd = document.createElement("td");
+            lastSeenTd.textContent = new Date(d.lastSeen).toLocaleString();
+            tr.appendChild(lastSeenTd);
+
+            // Rogue? cell
+            const rogueTd = document.createElement("td");
+            if (d.rogue) {
+              rogueTd.innerHTML = `<span class="badge bg-danger">Yes</span>`;
+            } else {
+              rogueTd.innerHTML = `<span class="badge bg-success">No</span>`;
+            }
+            tr.appendChild(rogueTd);
+
+            // Action cell with “Mark Known” button
+            const actionTd = document.createElement("td");
+            if (d.rogue) {
+              const btn = document.createElement("button");
+              btn.className = "btn btn-sm btn-primary";
+              btn.textContent = "Mark Known";
+              btn.addEventListener("click", () => {
+                toggleKnown(d.ip, btn);
+              });
+              actionTd.appendChild(btn);
+            } else {
+              // Already known—disable button
+              const span = document.createElement("span");
+              span.className = "text-muted";
+              span.textContent = "—";
+              actionTd.appendChild(span);
+            }
+            tr.appendChild(actionTd);
+
+            tbody.appendChild(tr);
+          });
+        } catch (err) {
+          console.error("Error fetching devices:", err);
+        }
+      }
+
+      // Send a POST to /network/freezy/network_toggle to mark this IP as known
+      async function toggleKnown(ip, buttonElem) {
+        try {
+          const formData = new URLSearchParams();
+          formData.append("ip", ip);
+
+          const resp = await fetch("/network/freezy/trust_network_device", {
+            method: "POST",
+            body: formData,
+          });
+          if (!resp.ok) {
+            throw new Error("Failed to toggle device");
+          }
+          // After marking known, refresh the table
+          loadDevices();
+        } catch (err) {
+          console.error("Error toggling known:", err);
+        }
+      }
+
+      // Initial load + refresh every 10 seconds
+      loadDevices();
+      setInterval(loadDevices, 10000);
+    </script>
+  {{end}}
+{{end}}

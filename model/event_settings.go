@@ -59,6 +59,8 @@ type EventSettings struct {
 	CoralBonusPerLevelThreshold     int
 	CoralBonusCoopEnabled           bool
 	BargeBonusPointThreshold        int
+	NetworkScannerEnabled           bool
+	NetworkScannerSubnet            string
 }
 
 func (database *Database) GetEventSettings() (*EventSettings, error) {

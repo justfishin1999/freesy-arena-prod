@@ -94,6 +94,7 @@ type Arena struct {
 	preloadedTeams                    *[6]*model.Team
 	lastPlcNotifyTime                 time.Time
 	Esp32                             plc.Esp32
+	NetworkScannerManager             *network.Manager
 }
 
 type AllianceStation struct {
@@ -226,6 +227,14 @@ func (arena *Arena) LoadSettings() error {
 	}
 	if err = arena.UpdatePlayoffTournament(); err != nil {
 		return err
+	}
+
+	arena.NetworkScannerManager = network.GetManager()
+	if arena.EventSettings.NetworkScannerEnabled {
+		arena.NetworkScannerManager.SetEnabled(
+			true,
+			arena.EventSettings.NetworkScannerSubnet,
+		)
 	}
 
 	return nil

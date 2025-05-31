@@ -251,6 +251,9 @@ func (web *Web) newHandler() http.Handler {
 	mux.HandleFunc("POST /panel/freezy/add_practice_match", web.addPracticeMatchPostHandler)
 	mux.HandleFunc("GET /panel/freezy/add_practice_match", web.addPracticeMatchGetHandler)
 	mux.HandleFunc("POST /panel/freezy/edit_practice_match", web.editPracticeMatchHandler)
+	mux.HandleFunc("GET /network/freezy/network_scanner", web.networkScannerSettingsHandler)
+	mux.HandleFunc("GET /network/freezy/network_devices", web.networkDevicesHandler)
+	mux.HandleFunc("POST /network/freezy/trust_network_device", web.networkToggleDeviceHandler)
 
 	return mux
 }
