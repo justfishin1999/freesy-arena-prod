@@ -351,6 +351,7 @@ UI for configuring event settings.
               <fieldset class="mb-4">
               <legend>Network Scanner</legend>
               <div class="row mb-3">
+                <p>Optionally enable periodic network scans. Can scan all team networks and FMS network (10.0.0.0/8), Limited FMS network (172.16.100.0/24), Switch Tranist Network (10.0.0.0/24) or FMS network only (10.0.100.0/24).</p>
                 <label class="col-lg-8 control-label"
                   for="networkSecurityEnabled">Enable network scans</label>
                 <div class="col-lg-1 checkbox">
@@ -379,17 +380,17 @@ UI for configuring event settings.
                     <option value="60"  {{ if eq .EventSettings.NetworkScannerInterval 60  }}selected{{ end }}>
                       60 Seconds (1 Minute)
                     </option>
-                    <option value="120" {{ if eq .EventSettings.NetworkScannerInterval 120 }}selected{{ end }}>
-                      120 Seconds (2 Minutes)
+                    <option value="300" {{ if eq .EventSettings.NetworkScannerInterval 300 }}selected{{ end }}>
+                      300 Seconds (5 Minutes)
                     </option>
-                    <option value="240" {{ if eq .EventSettings.NetworkScannerInterval 240 }}selected{{ end }}>
-                      240 Seconds (4 Minutes)
+                    <option value="600" {{ if eq .EventSettings.NetworkScannerInterval 600 }}selected{{ end }}>
+                      600 Seconds (10 Minutes)
                     </option>
-                    <option value="480" {{ if eq .EventSettings.NetworkScannerInterval 480 }}selected{{ end }}>
-                      480 Seconds (8 Minutes)
+                    <option value="900" {{ if eq .EventSettings.NetworkScannerInterval 900 }}selected{{ end }}>
+                      900 Seconds (15 Minutes)
                     </option>
-                    <option value="960" {{ if eq .EventSettings.NetworkScannerInterval 960 }}selected{{ end }}>
-                      960 Seconds (16 Minutes)
+                    <option value="1200" {{ if eq .EventSettings.NetworkScannerInterval 1200 }}selected{{ end }}>
+                      1200 Seconds (20 Minutes)
                     </option>
                   </select>
                 </div>

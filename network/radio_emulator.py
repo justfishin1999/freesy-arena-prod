@@ -148,7 +148,7 @@ class FRCFieldRadioEmulator(http.server.BaseHTTPRequestHandler):
                         "ssid": config["ssid"],
                         "hashedWpaKey": "",  # Not implemented
                         "wpaKeySalt": "",  # Not implemented
-                        "isLinked": False,  # Emulate no active connections
+                        "isLinked": True,  # Emulate no active connections
                         "rxRateMbps": 0.0,
                         "txRateMbps": 0.0,
                         "signalNoiseRatio": 0,
