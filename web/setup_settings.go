@@ -125,6 +125,7 @@ func (web *Web) settingsPostHandler(w http.ResponseWriter, r *http.Request) {
 	eventSettings.NetworkScannerEnabled = r.PostFormValue("networkScannerEnabled") == "on"
 	eventSettings.NetworkScannerSubnet = r.PostFormValue("networkScannerSubnet")
 	eventSettings.NetworkScannerInterval, _ = strconv.Atoi(r.PostFormValue("networkScannerInterval"))
+	eventSettings.FlashDSEnabled = r.PostFormValue("flashDSEnabled") == "on"
 
 	err := web.arena.Database.UpdateEventSettings(eventSettings)
 	if err != nil {

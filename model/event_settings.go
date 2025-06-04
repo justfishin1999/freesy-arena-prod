@@ -62,6 +62,7 @@ type EventSettings struct {
 	NetworkScannerEnabled           bool
 	NetworkScannerSubnet            string
 	NetworkScannerInterval          int
+	FlashDSEnabled                  bool
 }
 
 func (database *Database) GetEventSettings() (*EventSettings, error) {
