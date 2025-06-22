@@ -1,27 +1,31 @@
 <!-- Author: justin.d.fischer@icloud.com -->
-<!-- Web page for filler queue -->
+<!-- Web page for Filler Queue -->
 
 {{define "title"}}Filler Queue{{end}}
 
 {{define "body"}}
-<link rel="stylesheet" href="/static/css/filler_queue.css"></style>
+<link rel="stylesheet" href="/static/css/filler_queue.css">
 
-<!-- Add Text Here Card -->
-<div class="card rounded-3 shadow-sm" style="max-width: 813px;">
-    <div class="freezy-card-header bg-header rounded-top">
-      <h4 class="mb-0">Practice Match Filler Queue Manager</h4>
-    </div>
-    <div class="card-body">
-      <p>Use this panel to add matches ad-hoc to the current practice match schedule, or build your own from ground up. 
-        Matches are automatically scheduled 15 minutes apart. If no practice schedule is present, the match is scheduled 15 minutes from when add is pressed.
-        Optionally, you can edit matches and re-schedule them as needed. Validate the match time <b>before</b> saving an edited match!</p>
-    </div>
+<!-- Info Card -->
+<div class="card rounded-3 shadow-sm mx-auto" style="max-width: 813px;">
+  <div class="freezy-card-header bg-header rounded-top">
+    <h4 class="mb-0">Practice Match Filler Queue Manager</h4>
+  </div>
+  <div class="card-body">
+    <p>
+      Use this panel to add practice matches ad-hoc or build a custom schedule from scratch.
+      Matches are automatically spaced 15 minutes apart. If no existing schedule is found,
+      the first match is scheduled 15 minutes from the time it’s added.
+      You can also edit and re-schedule matches — just make sure to <strong>verify the time</strong> before saving.
+    </p>
+  </div>
 </div>
 <br>
 
-<!-- Match List -->
-<div class="d-flex flex-row align-start gap-4">
-  <div class="card rounded-3 shadow-sm me-5" style="min-width: 500px;">
+<!-- Layout: Match List + Add Match -->
+<div class="d-flex flex-row gap-4 align-start flex-wrap">
+  <!-- Match Schedule Table -->
+  <div class="card rounded-3 shadow-sm flex-fill" style="min-width: 500px;">
     <div class="freezy-card-header bg-schedule rounded-top">
       <h4 class="mb-0">Practice Match Schedule</h4>
     </div>
@@ -57,8 +61,8 @@
     </div>
   </div>
 
-<!-- Add Match -->
-  <div class="card rounded-3 shadow-sm" style="max-width: 500px;">
+  <!-- Add Match Form -->
+  <div class="card rounded-3 shadow-sm flex-fill align-self-start" style="max-width: 500px;">
     <div class="freezy-card-header bg-editorpane rounded-top">
       <h4 class="mb-0">Add Practice Match</h4>
     </div>
@@ -90,7 +94,7 @@
   </div>
 </div>
 
-<!-- Edit Match Popup (Modal)-->
+<!-- Edit Match Modal -->
 <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <form method="POST" action="/panel/freezy/edit_practice_match" class="modal-content">
@@ -100,8 +104,10 @@
       </div>
       <div class="modal-body">
         <input type="hidden" name="matchId" id="editMatchId">
-        <label for="matchTime">Match Time:</label>
-        <input type="datetime-local" id="matchTime" name="matchTime" value="{{ .MatchTimeValue }}">
+        <div class="mb-3">
+          <label for="matchTime">Match Time:</label>
+          <input type="time" id="matchTime" name="matchTime" class="form-control" value="{{ .MatchTimeValue }}">
+        </div>
         <hr>
         <fieldset class="mb-3">
           <legend class="h6">Red Alliance</legend>

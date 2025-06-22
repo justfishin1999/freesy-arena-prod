@@ -1,15 +1,10 @@
-! Baseline configuration for Catalyst 3500/3600/3700-series switches. Load this into the switch prior to configuring
-! Cheesy Arena to connect to it. Default password is 1234Five.
-!
 no service password-encryption
 !
 hostname FreezySwitch
 !
-boot-start-marker
-boot-end-marker
 !
 !
-enable secret 5 $1$kKSW$fCMwnMdYvXui1TulfyYHN
+enable secret 1234Five
 !
 no aaa new-model
 system mtu routing 1500
