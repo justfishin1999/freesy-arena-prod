@@ -86,6 +86,13 @@ func (web *Web) settingsPostHandler(w http.ResponseWriter, r *http.Request) {
 	eventSettings.ApChannel, _ = strconv.Atoi(r.PostFormValue("apChannel"))
 	eventSettings.SwitchAddress = r.PostFormValue("switchAddress")
 	eventSettings.SwitchPassword = r.PostFormValue("switchPassword")
+	eventSettings.SCCManagementEnabled = r.PostFormValue("sccManagementEnabled") == "on"
+	eventSettings.RedSCCAddress = r.PostFormValue("redSCCAddress")
+	eventSettings.BlueSCCAddress = r.PostFormValue("blueSCCAddress")
+	eventSettings.SCCUsername = r.PostFormValue("sccUsername")
+	eventSettings.SCCPassword = r.PostFormValue("sccPassword")
+	eventSettings.SCCUpCommands = r.PostFormValue("sccUpCommands")
+	eventSettings.SCCDownCommands = r.PostFormValue("sccDownCommands")
 	eventSettings.PlcAddress = r.PostFormValue("plcAddress")
 	eventSettings.AdminPassword = r.PostFormValue("adminPassword")
 	eventSettings.TeamSignRed1Id, _ = strconv.Atoi(r.PostFormValue("teamSignRed1Id"))
@@ -96,6 +103,7 @@ func (web *Web) settingsPostHandler(w http.ResponseWriter, r *http.Request) {
 	eventSettings.TeamSignBlue2Id, _ = strconv.Atoi(r.PostFormValue("teamSignBlue2Id"))
 	eventSettings.TeamSignBlue3Id, _ = strconv.Atoi(r.PostFormValue("teamSignBlue3Id"))
 	eventSettings.TeamSignBlueTimerId, _ = strconv.Atoi(r.PostFormValue("teamSignBlueTimerId"))
+	eventSettings.UseLiteUdpPort = r.PostFormValue("useLiteUdpPort") == "on"
 	eventSettings.BlackmagicAddresses = r.PostFormValue("blackmagicAddresses")
 	eventSettings.WarmupDurationSec, _ = strconv.Atoi(r.PostFormValue("warmupDurationSec"))
 	eventSettings.AutoDurationSec, _ = strconv.Atoi(r.PostFormValue("autoDurationSec"))

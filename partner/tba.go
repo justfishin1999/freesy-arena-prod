@@ -15,8 +15,8 @@ import (
 	"github.com/Team254/cheesy-arena/model"
 	"github.com/mitchellh/mapstructure"
 	"io"
-	"io/ioutil"
 	"net/http"
+	"os"
 	"strconv"
 )
 
@@ -285,12 +285,11 @@ func (client *TbaClient) DownloadTeamAvatar(teamNumber, year int) error {
 
 			// Store the avatar to disk as a PNG file.
 			avatarPath := fmt.Sprintf("%s/%d.png", AvatarsDir, teamNumber)
-			ioutil.WriteFile(avatarPath, avatarBytes, 0644)
-			return nil
+			return os.WriteFile(avatarPath, avatarBytes, 0644)
 		}
 	}
 
-	return fmt.Errorf("No avatar found for team %d in year %d.", teamNumber, year)
+	return nil
 }
 
 // Uploads the event team list to The Blue Alliance.
@@ -681,6 +680,7 @@ func createTbaScoringBreakdown(
 	breakdown.TeleopReef.TbaTopRowCount = breakdown.AutoReef.TbaTopRowCount +
 		score.Reef.CountCoralByLevelAndPeriod(game.Level4, false)
 	breakdown.TeleopReef.Trough = score.Reef.CountCoralByLevelAndPeriod(game.Level1, false)
+	breakdown.TeleopCoralCount = score.Reef.TeleopCoralCount()
 	teleopCoralPoints := score.Reef.TeleopCoralPoints()
 	breakdown.TeleopCoralPoints = teleopCoralPoints
 	breakdown.NetAlgaeCount = score.BargeAlgae
